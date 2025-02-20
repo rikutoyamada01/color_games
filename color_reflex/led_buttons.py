@@ -13,7 +13,7 @@ class LEDButton(pg.sprite.Sprite):
         self.radius = 125
         
         self.num_leds =16
-        self.pin = 18
+        self.pin = con.PORT_LIGHT
         self.strip = PixelStrip(self.num_leds, self.pin)
         self.strip.begin()
         self.is_lighting = False

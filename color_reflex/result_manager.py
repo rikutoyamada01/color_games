@@ -6,7 +6,7 @@ import os
 class Result():
     def __init__(self, screen: pg.surface.Surface, x: int, y: int) -> None:
         self.screen = screen
-        self.width = 300
+        self.width = 400
         self.whole_result_rect = pg.Rect(x-self.width/2, y, self.width, 50)
         self.your_result_rect = pg. Rect(x-self.width/2, y+75, self.width, 50)
         self.new_result_rect = pg.Rect(x-self.width/2, y+150, self.width, 50)
@@ -21,9 +21,9 @@ class Result():
 
 
     def draw(self) -> None:
-        self._draw(self.whole_result_rect, f"{self.top_player}'s highscore : {self.highscore}")
-        self._draw(self.your_result_rect, f"Your best score : {self.your_highscore}")
-        self._draw(self.new_result_rect, f"new score : {self.new_score}")
+        self._draw(self.whole_result_rect, f"{self.top_player}'s highscore : {self.highscore} ms")
+        self._draw(self.your_result_rect, f"Your best score : {self.your_highscore} ms")
+        self._draw(self.new_result_rect, f"new score : {self.new_score} ms")
 
 
     def load(self) -> None:

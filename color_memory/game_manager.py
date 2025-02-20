@@ -74,17 +74,21 @@ class GameManager():
         #button update
         for color_button in self.color_buttons:
             color_button.update(self.cooldown)
+            
+        if self.cooldown <= 0:
+            self.led_button.light_down()
 
         #light up control
         if self.current_state == "WAITING":
-            if self.cooldown < -5:
+            if self.cooldown < -20:
                 if self.current_round_number >= len(self.rounds):
                     self.current_state = "INPUT"
                     self.current_round_number = 0
+                    self.led_button.light_down()
                 else:
-                    self.led_button.light_up(self.rounds[len(self.rounds)-1].color)
+                    self.led_button.light_up(self.rounds[self.current_round_number].color)
                     self.rounds[self.current_round_number].click()
-                    self.cooldown = 35
+                    self.cooldown = 50
                     self.current_round_number += 1
             else:
                 self.cooldown -= 1
@@ -131,6 +135,7 @@ class GameManager():
                             color_button.click()
                             if color_button == self.rounds[self.input_round_number]:
                                 self.cooldown = 20
+                                self.led_button.light_up(color_button.color)
                                 self.input_round_number += 1
                             else:
                                 self._reset("GAME_OVER")

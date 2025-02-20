@@ -83,7 +83,6 @@ class GameManager():
                     self.current_round_number = 0
                 else:
                     self.led_button.light_up(self.rounds[len(self.rounds)-1].color)
-                    self.start_time = pg.time.get_ticks()/10
                     self.current_round_number += 1
             else:
                 self.cooldown -= 1
@@ -101,8 +100,6 @@ class GameManager():
 
         if len(self.rounds) > 10:
             self._reset("GAME_OVER")
-            self.end_time = self.clock.get_time()/10
-            self.time = self.end_time - self.start_time
 
         self._update_music()
 
@@ -116,14 +113,17 @@ class GameManager():
                     if self.current_state == "START":
                         self.current_state = "WAITING"
                         self.start_button.click()
+                        self.start_time = pg.time.get_ticks()
+                        self.cooldown = 50
                 if self.restart_button.rect.collidepoint((pg.mouse.get_pos())):
                     if self.current_state == "GAME_OVER":
                         self.current_state = "WAITING"
                         self.restart_button.click()
-                        self.start_time = pg.time.get_ticks()/10
+                        self.start_time = pg.time.get_ticks()
+                        self.cooldown = 50
                 if self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
                     if self.current_state in ["START","GAME_OVER"]:
-                        self.restart_button.click()
+                        self.exit_button.click()
                         self._quit()
 
                 #input about color button
@@ -179,10 +179,12 @@ class GameManager():
 
     def _reset(self, state: str) -> None:
         self.current_state = state
-        self.end_time = pg.time.get_ticks()/10
+        self.end_time = pg.time.get_ticks()
         self.time = self.end_time - self.start_time
         self.highscore_is_changed = self.result.save(round(self.time, 2), self.player_name.get())
         self.rounds = []
+        self.led_button.light_down
+        self.led_button.draw()
         self.current_round_number = 0
         self.input_round_number = 0
 
