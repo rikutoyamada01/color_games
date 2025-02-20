@@ -6,7 +6,7 @@ For STEM lesson to make the games that are good for elder people
 git clone https://github.com/ymd20060720/color_games
 
 #### Navigate to the project folder
-cd your-repo
+cd color_games
 
 #### Install dependencies
 npm install  
