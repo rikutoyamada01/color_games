@@ -5,7 +5,7 @@ For STEM lesson to make the games that are good for elder people
 
 ### Clone the repo
 ```sh
-git clone https://github.com/ymd20060720/color_games
+git clone https://github.com/rikutoyamada01/color_games
 ```
 
 ### Navigate to the project folder
