@@ -77,6 +77,8 @@ class GameManager():
 
         #light up control
         if self.current_state == "WAITING":
+            self.cooldown -= 1
+            
             if self.cooldown < -5:
                 if self.current_round_number >= len(self.rounds):
                     self.current_state = "INPUT"
@@ -84,19 +86,17 @@ class GameManager():
                 else:
                     self.led_button.light_up(self.rounds[len(self.rounds)-1].color)
                     self.current_round_number += 1
-            else:
-                self.cooldown -= 1
 
         #check rounds and change to waiting phase
         if self.current_state == "INPUT":
+            self.cooldown -= 1
+            
             if self.cooldown <= 0:
                 if self.input_round_number >= len(self.rounds):
                     self.current_state = "WAITING"
                     self.led_button.light_down()
                     self.rounds.append(random.choice(self.color_buttons)) #random
                     self.cooldown = 80
-            else:
-                self.cooldown -= 1
 
         if len(self.rounds) > 10:
             self._reset("GAME_OVER")
@@ -127,7 +127,7 @@ class GameManager():
                         self._quit()
 
                 #input about color button
-                if self.cooldown <= 0 and self.current_state == "INPUT":
+                if self.cooldown < 0 and self.current_state == "INPUT":
                     for color_button in self.color_buttons:
                         if color_button.button_center.collidepoint((pg.mouse.get_pos())):
                             if color_button.color == self.rounds[len(self.rounds)-1].color:
@@ -140,15 +140,13 @@ class GameManager():
                 if self.current_state == "START":
                     self.player_name.handle_input(event)
                     
-        if self.cooldown <= 0 and self.current_state == "INPUT":
+        if self.cooldown < 0 and self.current_state == "INPUT":
             for color_button in self.color_buttons:
                 if not self.gpio.input(color_button.port_num):
-                    color_button.click()
                     if color_button == self.rounds[self.input_round_number]:
+                        color_button.click()
                         self.cooldown = 20
                         self.input_round_number += 1
-                    else:
-                        self._reset("GAME_OVER")
 
 
     def draw(self) -> None:
