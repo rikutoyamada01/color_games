@@ -30,7 +30,7 @@ class ColorButton(pg.sprite.Sprite):
 
     
     def update(self,cooldown):
-        if cooldown <= 0:
+        if cooldown <= 5:
             self.is_clicked = False
 
 def test():

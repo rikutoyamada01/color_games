@@ -80,6 +80,8 @@ class GameManager():
 
         #light up control
         if self.current_state == "WAITING":
+            self.cooldown -= 1
+            
             if self.cooldown < -20:
                 if self.current_round_number >= len(self.rounds):
                     self.current_state = "INPUT"
@@ -90,11 +92,11 @@ class GameManager():
                     self.rounds[self.current_round_number].click()
                     self.cooldown = 50
                     self.current_round_number += 1
-            else:
-                self.cooldown -= 1
 
         #check rounds and change to waiting phase
         if self.current_state == "INPUT":
+            self.cooldown -= 1
+            
             if self.cooldown <= 0:
                 if self.input_round_number >= len(self.rounds):
                     self.current_state = "WAITING"
@@ -102,8 +104,6 @@ class GameManager():
                     self.input_round_number = 0
                     self.rounds.append(random.choice(self.color_buttons)) #random
                     self.cooldown = 40
-            else:
-                self.cooldown -= 1
 
         self._update_music()
         
@@ -128,7 +128,7 @@ class GameManager():
                         self._quit()
 
                 #input about color button
-                if self.cooldown <= 0 and self.current_state == "INPUT":
+                if self.cooldown < 0 and self.current_state == "INPUT":
                     for color_button in self.color_buttons:
                         print(not self.gpio.input(color_button.port_num))
                         if (color_button.button_center.collidepoint((pg.mouse.get_pos()))):
@@ -144,7 +144,7 @@ class GameManager():
                 if self.current_state == "START":
                     self.player_name.handle_input(event)
             
-        if self.cooldown <= 0 and self.current_state == "INPUT":
+        if self.cooldown < 0 and self.current_state == "INPUT":
             for color_button in self.color_buttons:
                 if not self.gpio.input(color_button.port_num):
                     color_button.click()
