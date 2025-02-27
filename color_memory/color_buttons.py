@@ -1,6 +1,7 @@
 import constants as con
 import pygame as pg
-#from random import randint
+from gpiozero import Button
+
 
 pg.mixer.init()
 
@@ -15,6 +16,7 @@ class ColorButton(pg.sprite.Sprite):
         self.radius = 125
         self.is_clicked = False
         self.sound = pg.mixer.Sound("Audio/SE/UI/menu_button_click_sound.mp3")
+        self.gpio_button = Button(port_num)
 
     def draw(self):
         self.button_center = pg.draw.circle(self.screen,self.color,self.pos,self.radius,0)
@@ -32,6 +34,9 @@ class ColorButton(pg.sprite.Sprite):
     def update(self,cooldown):
         if cooldown <= 5:
             self.is_clicked = False
+
+    def when_pressed(self):
+        return self.gpio_button.when_pressed
 
 def test():
     pg.init()

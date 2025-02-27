@@ -1,7 +1,7 @@
 import constants as con
 import pygame as pg
-import RPi.GPIO as GPIO
-from rpi_ws281x import PixelStrip, Color
+import board
+import neopixel
 
 
 class LEDButton(pg.sprite.Sprite):
@@ -13,9 +13,8 @@ class LEDButton(pg.sprite.Sprite):
         self.radius = 125
         
         self.num_leds =16
-        self.pin = 18
-        self.strip = PixelStrip(self.num_leds, self.pin)
-        self.strip.begin()
+        self.pin = board.D18
+        self.strip = neopixel.NeoPixel(self.pin, self.num_leds, brightness=0.2, auto_write=False)
         self.is_lighting = False
         self.sound = pg.mixer.Sound("Audio/SE/UI/menu_button_click_sound.mp3")
 
@@ -24,7 +23,7 @@ class LEDButton(pg.sprite.Sprite):
         self.button_trim = pg.draw.circle(self.screen,con.BLACK,self.pos,self.radius + 10,12)
         
         for i in range(self.num_leds):
-            self.strip.setPixelColor(i, Color(self.color[0], self.color[1], self.color[2])) 
+            self.strip[i] = (self.color[0],self.color[1],self.color[2])
         self.strip.show()
 
     def light_up(self, color):

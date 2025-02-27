@@ -6,7 +6,6 @@ from menu_buttons import MenuButton
 from player_name_manager import PlayerName
 from result_manager import Result
 import random
-import RPi.GPIO as GPIO
 
 class GameManager():
     def __init__(self) -> None:
@@ -34,10 +33,6 @@ class GameManager():
         self.input_channel = pg.mixer.Channel(2)
         self.game_over_channel = pg.mixer.Channel(3)
 
-
-
-
-
         #init buttons and result
         self.start_button = MenuButton(self.screen,con.SCREEN_WIDTH/2,400,"start",con.LIGHT_GREEN)
         self.exit_button = MenuButton(self.screen,con.SCREEN_WIDTH/2, 500, "exit",con.LIGHT_GREEN)
@@ -53,13 +48,6 @@ class GameManager():
         self.yellow_button = ColorButton(self.screen, 150, con.SCREEN_HEIGHT/2, con.YELLOW, con.LIGHT_YELLOW, con.PORT_YELLOW)
         self.green_button = ColorButton(self.screen, con.SCREEN_WIDTH-150, con.SCREEN_HEIGHT/2, con.GREEN, con.LIGHT_GREEN ,con.PORT_GREEN)
         self.color_buttons = [self.red_button, self.blue_button, self.yellow_button, self.green_button]
-        
-        self.gpio = GPIO
-        self.gpio.setmode(self.gpio.BCM)
-        self.gpio.setup(con.PORT_GREEN, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
-        self.gpio.setup(con.PORT_RED, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
-        self.gpio.setup(con.PORT_YELLOW, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
-        self.gpio.setup(con.PORT_BLUE, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
         
         self.led_button = LEDButton(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT/2)
 
@@ -130,7 +118,6 @@ class GameManager():
                 #input about color button
                 if self.cooldown < 0 and self.current_state == "INPUT":
                     for color_button in self.color_buttons:
-                        print(not self.gpio.input(color_button.port_num))
                         if (color_button.button_center.collidepoint((pg.mouse.get_pos()))):
                             color_button.click()
                             if color_button == self.rounds[self.input_round_number]:
@@ -146,7 +133,7 @@ class GameManager():
             
         if self.cooldown < 0 and self.current_state == "INPUT":
             for color_button in self.color_buttons:
-                if not self.gpio.input(color_button.port_num):
+                if color_button.when_pressed():
                     color_button.click()
                     if color_button == self.rounds[self.input_round_number]:
                         self.cooldown = 20
