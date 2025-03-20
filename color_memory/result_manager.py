@@ -2,6 +2,7 @@ import constants as con
 import pygame as pg
 import json
 import os
+import bisect
 
 class Result():
     def __init__(self, screen: pg.surface.Surface, x: int, y: int) -> None:
@@ -25,15 +26,26 @@ class Result():
 
     def load(self) -> None:
         self._check_file_exists()
+        
+        try:
+            with open('result.json', 'r', encoding='utf-8') as fp:
+                self.data: list = json.load(fp)
+                self.top_player = self.data[self.data.count].get("name")
+                self.highscore = self.data[self.data.count].get("score")
+                self.scores = [entry["score"] for entry in self.data]
+        except:
+            self.data = []
+            self.top_player = "No Name"
+            self.highscore = 0
+            self.scores = [0]
 
-        with open('result.json', 'r', encoding='utf-8') as fp:
-            data: dict = json.load(fp)
-            self.top_player = data.get("name")
-            self.highscore = data.get("score")
 
 
     def save(self, new_score: int, name: str) -> None:
         self._check_file_exists()
+        self.index = bisect.bisect_left(self.scores, new_score)
+
+        self.data.insert(self.index, {"name":name, "score":new_score})
 
         if new_score > self.your_highscore:
             self.your_highscore = new_score
@@ -43,7 +55,7 @@ class Result():
             self.top_player = name
 
             with open('result.json', 'w', encoding='utf-8') as fp:
-                json.dump({"name":name,"score":new_score}, fp, ensure_ascii=False, indent=4)
+                json.dump(self.data, fp, ensure_ascii=False, indent=4)
 
 
     def _draw(self, rect: pg.rect.Rect, text:str) -> None:
@@ -61,7 +73,7 @@ class Result():
         if os.path.isfile('result.json') == False:
             os.mkdir('result.json')
             with open('result.json', 'w', encoding='utf-8') as fp:
-                json.dump({"name":"No Name","score":0}, fp, ensure_ascii=False, indent=4)
+                json.dump([], fp, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     with open('result.json', 'r', encoding='utf-8') as fp:
