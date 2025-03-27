@@ -179,7 +179,7 @@ class GameManager():
         self.current_state = state
         self.end_time = pg.time.get_ticks()
         self.time = self.end_time - self.start_time
-        self.highscore_is_changed = self.result.save(round(self.time, 2), self.player_name.get())
+        self.highscore_is_changed = self.result.save(round(self.time/1000, 3), self.player_name.get())
         self.rounds = []
         self.led_button.light_down
         self.led_button.draw()

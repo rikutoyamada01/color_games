@@ -13,15 +13,15 @@ class Result():
         self.color = con.RED
         self.hover_color = con.LIGHT_RED
         self.font = pg.font.Font(None, 36)
-        self.your_highscore = 0
+        self.your_highscore = 9999999
         self.your_name = "No Name"
-        self.highscore = 0
+        self.highscore = 9999999
         self.top_player = "No Name"
 
 
     def draw(self) -> None:
-        self._draw(self.whole_result_rect, f"{self.top_player}'s highscore : {self.highscore}")
-        self._draw(self.your_result_rect, f"Your best score : {self.your_highscore}")
+        self._draw(self.whole_result_rect, f"{self.top_player}'s highscore : {self.highscore}s")
+        self._draw(self.your_result_rect, f"Your best score : {self.your_highscore}s")
 
 
     def load(self) -> None:
@@ -41,26 +41,20 @@ class Result():
 
     def save(self, new_score: int, name: str) -> None:
         self._check_file_exists()  # Ensure file exists
+        self.index = bisect.bisect_left(self.scores, new_score)
 
-        # Insert into scores in descending order
-        self.index = bisect.bisect_right([-s for s in self.scores], -new_score)
-        
-        self.data.insert(self.index, {"name": name, "score": new_score})
-        
-        # Update scores list
-        self.scores.insert(self.index, new_score)
+        self.data.insert(self.index, {"name":name, "score":new_score})
 
-        # Update high scores
-        if new_score > self.your_highscore:
+        if new_score < self.your_highscore:
             self.your_highscore = new_score
 
-        if new_score > self.highscore:
+        if new_score < self.highscore:
             self.highscore = new_score
             self.top_player = name
 
-        # Save data to file every time
         with open('result.json', 'w', encoding='utf-8') as fp:
-            json.dump(self.data, fp, ensure_ascii=False, indent=4)
+                json.dump(self.data, fp, ensure_ascii=False, indent=4)
+        
 
 
     def _draw(self, rect: pg.rect.Rect, text:str) -> None:
@@ -76,7 +70,6 @@ class Result():
 
     def _check_file_exists(self):
         if os.path.isfile('result.json') == False:
-            os.mkdir('result.json')
             with open('result.json', 'w', encoding='utf-8') as fp:
                 json.dump([], fp, ensure_ascii=False, indent=4)
 
