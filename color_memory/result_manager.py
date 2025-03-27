@@ -54,7 +54,7 @@ class Result():
             self.highscore = new_score
             self.top_player = name
 
-            with open('result.json', 'w', encoding='utf-8') as fp:
+        with open('result.json', 'w', encoding='utf-8') as fp:
                 json.dump(self.data, fp, ensure_ascii=False, indent=4)
 
 
@@ -71,7 +71,6 @@ class Result():
 
     def _check_file_exists(self):
         if os.path.isfile('result.json') == False:
-            os.mkdir('result.json')
             with open('result.json', 'w', encoding='utf-8') as fp:
                 json.dump([], fp, ensure_ascii=False, indent=4)
 
