@@ -26,12 +26,12 @@ class Result():
 
     def load(self) -> None:
         self._check_file_exists()
-        
+
         try:
             with open('result.json', 'r', encoding='utf-8') as fp:
                 self.data: list = json.load(fp)
-                self.top_player = self.data[self.data.count].get("name")
-                self.highscore = self.data[self.data.count].get("score")
+                self.top_player = self.data[-1].get("name")
+                self.highscore = self.data[-1].get("score")
                 self.scores = [entry["score"] for entry in self.data]
         except:
             self.data = []

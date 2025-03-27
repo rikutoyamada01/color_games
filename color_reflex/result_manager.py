@@ -40,11 +40,17 @@ class Result():
 
 
     def save(self, new_score: int, name: str) -> None:
-        self._check_file_exists()
-        self.index = bisect.bisect_left(self.scores, new_score)
+        self._check_file_exists()  # Ensure file exists
 
-        self.data.insert(self.index, {"name":name, "score":new_score})
+        # Insert into scores in descending order
+        self.index = bisect.bisect_right([-s for s in self.scores], -new_score)
+        
+        self.data.insert(self.index, {"name": name, "score": new_score})
+        
+        # Update scores list
+        self.scores.insert(self.index, new_score)
 
+        # Update high scores
         if new_score > self.your_highscore:
             self.your_highscore = new_score
 
@@ -52,8 +58,9 @@ class Result():
             self.highscore = new_score
             self.top_player = name
 
-            with open('result.json', 'w', encoding='utf-8') as fp:
-                json.dump(self.data, fp, ensure_ascii=False, indent=4)
+        # Save data to file every time
+        with open('result.json', 'w', encoding='utf-8') as fp:
+            json.dump(self.data, fp, ensure_ascii=False, indent=4)
 
 
     def _draw(self, rect: pg.rect.Rect, text:str) -> None:
