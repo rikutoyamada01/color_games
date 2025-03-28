@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 Navigate to the desired game folder:
 ```sh
-cd color_memory  # or cd color_reflex
+cd code/color_memory  # or cd code/color_reflex
 ```
 
 Run the game:
@@ -53,4 +53,3 @@ deactivate
 
 ## 3. License
 This project is not licensed.
-
