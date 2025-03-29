@@ -13,14 +13,14 @@
 - [x] Create a basic `.gitignore` file.
 
 ### GPIO Module Mock Creation for Windows
-- [ ] Research GPIO module functionality and requirements.
-- [ ] Define the interface for the GPIO mock module.
-- [ ] Implement basic GPIO mock methods (e.g., `setup`, `input`, `output`).
-- [ ] Simulate GPIO pin states in the mock.
+- [x] Research GPIO module functionality and requirements.
+- [x] Define the interface for the GPIO mock module.
+- [x] Implement basic GPIO mock methods (e.g., `setup`, `input`, `output`).
+- [x] Simulate GPIO pin states in the mock.
 - [ ] Add logging to track GPIO interactions.
 - [ ] Test the GPIO mock with a sample script.
-- [ ] Integrate the GPIO mock into the game project.
-- [ ] Verify compatibility with Windows.
+- [x] Integrate the GPIO mock into the game project.
+- [x] Verify compatibility with Windows.
 - [ ] Document the GPIO mock implementation.
 - [ ] Ensure the mock can be easily replaced with the real GPIO module.
 
