@@ -26,15 +26,15 @@
 
 
 ### Class Refactoring for Shared Features
-- [ ] Identify shared features between Color Memory and Color Reflex.
-- [ ] Create a base class for shared features.
-- [ ] Implement shared color display logic in the base class.
-- [ ] Add shared scoring logic to the base class.
-- [ ] Refactor Color Memory to use the base class.
-- [ ] Refactor Color Reflex to use the base class.
-- [ ] Test Color Memory with the refactored base class.
-- [ ] Test Color Reflex with the refactored base class.
-- [ ] Document the refactored class structure.
+- [x] Identify shared features between Color Memory and Color Reflex.
+- [x] Create a base class for shared features.
+- [x] Implement shared color display logic in the base class.
+- [x] Add shared scoring logic to the base class.
+- [x] Refactor Color Memory to use the base class.
+- [x] Refactor Color Reflex to use the base class.
+- [x] Test Color Memory with the refactored base class.
+- [x] Test Color Reflex with the refactored base class.
+- [x] Document the refactored class structure.
 - [ ] Optimize the base class for performance.
 
 ### Testing and Debugging
