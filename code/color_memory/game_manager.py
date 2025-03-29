@@ -6,7 +6,15 @@ from menu_buttons import MenuButton
 from player_name_manager import PlayerName
 from result_manager import Result
 import random
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    import sys
+    import os
+
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+    from mock_gpio import MockGPIO as GPIO
 
 class GameManager():
     def __init__(self) -> None:

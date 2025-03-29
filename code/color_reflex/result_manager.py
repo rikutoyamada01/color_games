@@ -27,7 +27,7 @@ class Result():
     def load(self) -> None:
         self._check_file_exists()
         try:
-            with open('result.json', 'r', encoding='utf-8') as fp:
+            with open('code/reflex_result.json', 'r', encoding='utf-8') as fp:
                 self.data: list = json.load(fp)
                 self.top_player = self.data[0].get("name")
                 self.highscore = self.data[0].get("score")
@@ -52,7 +52,7 @@ class Result():
             self.highscore = new_score
             self.top_player = name
 
-        with open('result.json', 'w', encoding='utf-8') as fp:
+        with open('code/reflex_result.json', 'w', encoding='utf-8') as fp:
                 json.dump(self.data, fp, ensure_ascii=False, indent=4)
         
 
@@ -69,11 +69,11 @@ class Result():
         self.screen.blit(text_surf, text_rect)
 
     def _check_file_exists(self):
-        if os.path.isfile('result.json') == False:
-            with open('result.json', 'w', encoding='utf-8') as fp:
+        if os.path.isfile('code/reflex_result.json') == False:
+            with open('code/reflex_result.json', 'w', encoding='utf-8') as fp:
                 json.dump([], fp, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    with open('result.json', 'r', encoding='utf-8') as fp:
+    with open('code/reflex_result.json', 'r', encoding='utf-8') as fp:
         data: dict = json.load(fp)
         print(data)

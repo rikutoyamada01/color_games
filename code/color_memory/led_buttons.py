@@ -1,7 +1,16 @@
 import constants as con
 import pygame as pg
-import RPi.GPIO as GPIO
-from rpi_ws281x import PixelStrip, Color
+try:
+    import RPi.GPIO as GPIO
+    from rpi_ws281x import PixelStrip, Color
+except ImportError:
+    import sys
+    import os
+
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+    from mock_gpio import MockGPIO as GPIO
+    from mock_ws281x import PixelStrip, Color
 
 
 class LEDButton(pg.sprite.Sprite):

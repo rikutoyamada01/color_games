@@ -35,17 +35,26 @@ pip install -r requirements.txt
 ```
 
 ## 2. Usage
-
-Navigate to the desired game folder:
+#### Run the game:
+**For Rasberry Pi**
 ```sh
-cd code/color_memory  # or cd code/color_reflex
+sudo python3 code/color_memory/main.py
+```
+or
+```sh
+sudo python3 code/color_reflex/main.py
 ```
 
-Run the game:
+**For Windows**
+```command prompt
+python code/color_memory/main.py
+```
+or
 ```sh
-python main.py  # or sudo python3 main.py
+python code/color_reflex/main.py
 ```
 
+#### Deactivate virtual environment
 (If using virtual environment, deactivate when done:)
 ```sh
 deactivate
