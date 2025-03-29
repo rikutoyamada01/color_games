@@ -37,37 +37,3 @@ class LEDButton(pg.sprite.Sprite):
 
     def light_down(self):
         self.color = con.WHITE
-
-def test():
-    pg.init()
-    screen = pg.display.set_mode((con.SCREEN_WIDTH,con.SCREEN_HEIGHT))
-    pg.display.set_caption("Color Game")
-    cooldown = 0
-    clock=pg.time.Clock()
-
-    led_button = LEDButton(screen,con.SCREEN_WIDTH/2,150)
-
-    while True:
-        for event in pg.event.get():
-            if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                pg.quit()
-                exit()
-            if event.type == pg.MOUSEBUTTONDOWN:
-                if cooldown <= 0:
-                    if led_button.button_center.collidepoint(pg.mouse.get_pos()):
-                        led_button.light_up(con.GREEN)
-                        cooldown = 50
-
-        if cooldown < 0:
-            led_button.light_down()
-
-        screen.fill(con.WHITE)
-        cooldown -= 1
-        led_button.update(cooldown)
-        led_button.draw()
-        
-        pg.display.update()
-        clock.tick(60)
-
-if __name__ == "__main__":
-    test()
