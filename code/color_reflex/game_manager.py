@@ -1,4 +1,7 @@
 import pygame as pg
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import constants as con
 from color_buttons import ColorButton
 from led_buttons import LEDButton
@@ -9,11 +12,6 @@ import random
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    import sys
-    import os
-
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
     from mock_gpio import MockGPIO as GPIO
 
 class GameManager():
