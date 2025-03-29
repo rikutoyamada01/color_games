@@ -52,8 +52,8 @@ class GameManager():
 
         self.player_name = PlayerName(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT/2-100)
 
-        self.result = Result(self.screen,con.SCREEN_WIDTH/2,50)
-        self.result.load()
+        self.result = Result(self.screen,con.SCREEN_WIDTH/2,50, "reflex")
+        self.result.load("reflex")
 
         self.red_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
         self.blue_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
@@ -185,7 +185,7 @@ class GameManager():
         self.current_state = state
         self.end_time = pg.time.get_ticks()
         self.time = self.end_time - self.start_time
-        self.highscore_is_changed = self.result.save(round(self.time/1000, 3), self.player_name.get())
+        self.highscore_is_changed = self.result.save(round(self.time/1000, 3), self.player_name.get(), "reflex")
         self.rounds = []
         self.led_button.light_down
         self.led_button.draw()

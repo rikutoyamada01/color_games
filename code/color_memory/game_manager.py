@@ -51,8 +51,8 @@ class GameManager():
 
         self.player_name = PlayerName(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT/2-100)
 
-        self.result = Result(self.screen,con.SCREEN_WIDTH/2,50)
-        self.result.load()
+        self.result = Result(self.screen,con.SCREEN_WIDTH/2,50, "memory")
+        self.result.load("memory")
 
         self.red_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
         self.blue_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
@@ -189,7 +189,7 @@ class GameManager():
 
     def _reset(self, state: str) -> None:
         self.current_state = state
-        self.result.save(len(self.rounds), self.player_name.get())
+        self.result.save(len(self.rounds), self.player_name.get(), "memory")
         self.rounds = []
         self.current_round_number = 0
         self.input_round_number = 0
