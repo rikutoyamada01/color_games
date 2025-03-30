@@ -20,8 +20,8 @@ class Result():
 
 
     def draw(self) -> None:
-        self._draw(self.whole_result_rect, f"{self.top_player}'s highscore : {self.highscore}")
-        self._draw(self.your_result_rect, f"Your best score : {self.your_highscore}")
+        self._draw(self.whole_result_rect, f"{self.top_player}'s score : {self.highscore}")
+        self._draw(self.your_result_rect, f"Your score : {self.your_highscore}")
 
 
     def load(self, game_type: str = "memory") -> None:
