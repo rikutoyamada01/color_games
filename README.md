@@ -38,20 +38,13 @@ pip install -r requirements.txt
 #### Run the game:
 **For Rasberry Pi**
 ```sh
-sudo python3 code/color_memory/main.py
+sudo python code/main.py
 ```
-or
-```sh
-sudo python3 code/color_reflex/main.py
-```
+("sudo" is for using rpi_ws281x)
 
 **For Windows**
 ```command prompt
-python code/color_memory/main.py
-```
-or
-```sh
-python code/color_reflex/main.py
+python code/main.py
 ```
 
 #### Deactivate virtual environment
