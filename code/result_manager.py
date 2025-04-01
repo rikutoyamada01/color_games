@@ -19,9 +19,13 @@ class Result():
         self.top_player = "No Name"
 
 
-    def draw(self) -> None:
-        self._draw(self.whole_result_rect, f"{self.top_player}'s score : {self.highscore}")
-        self._draw(self.your_result_rect, f"Your score : {self.your_highscore}")
+    def draw(self, game_type) -> None:
+        if game_type == "memory":
+            self._draw(self.whole_result_rect, f"{self.top_player}'s score : {self.highscore}")
+            self._draw(self.your_result_rect, f"Your score : {self.your_highscore}")
+        else:
+            self._draw(self.whole_result_rect, f"{self.top_player}'s score : {self.highscore}s")
+            self._draw(self.your_result_rect, f"Your score : {self.your_highscore}s")
 
 
     def load(self, game_type: str = "memory") -> None:

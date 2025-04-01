@@ -170,7 +170,7 @@ class GameManager():
             self.memory_start_button.draw()
             self.reflex_start_button.draw()
             self.exit_button.draw()
-            self.result.draw()
+            self.result.draw(self.game_type)
 
         if self.current_state in self.active_game_states:
             round_surf = self.round_font.render(f"round {len(self.rounds)}", 0, con.BLACK)
