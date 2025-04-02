@@ -195,7 +195,7 @@ class GameManager():
             self.time = self.end_time - self.start_time
             self.result.save(self.time/1000, self.player_name.get(), game_type)
 
-        self.rank = self.result.get_rank()
+        self.rank = self.result.get_rank(self.game_type)
         self.led_button.light_down()
         self.led_button.light_up_for_rank(self.rank)
         self.led_button.draw()
