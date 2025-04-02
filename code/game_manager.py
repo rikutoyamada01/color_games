@@ -132,10 +132,12 @@ class GameManager():
                         self.current_state = "WAITING"
                         self.memory_start_button.click()
                         self.game_type = "memory"
+                        self.led_button.light_down()
                     if self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = "WAITING"
                         self.memory_start_button.click()
                         self.game_type = "reflex"
+                        self.led_button.light_down()
                         self.start_time = pg.time.get_ticks()
                         self.cooldown = 50
                     if self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
