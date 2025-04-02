@@ -223,7 +223,7 @@ class GameManager():
         self.rounds = []
         self.current_round_number = 0
         self.input_round_number = 0
-        self.cooldown = 50
+        self.cooldown = 100
 
     def _update_music(self):
         if self.current_state == "START":
