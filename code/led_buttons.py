@@ -13,7 +13,7 @@ class LEDButton(pg.sprite.Sprite):
         super().__init__()
         self.screen = screen
         self.pos = (x,y)
-        self.color = con.WHITE
+        self.color = con.BLACK
         self.radius = 125
         
         self.num_leds =16
@@ -49,8 +49,8 @@ class LEDButton(pg.sprite.Sprite):
         self.strip.show()
 
     def light_down(self):
-        if self.color == con.WHITE:
+        if self.color == con.BLACK:
             return
-        self.color = con.WHITE
+        self.color = con.BLACK
         self._set_color_on_all(self.color)
         self.strip.show()
