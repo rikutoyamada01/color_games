@@ -45,7 +45,7 @@ class LEDButton(pg.sprite.Sprite):
             for i in range(rank):
                 self.strip.setPixelColor(i, Color(con.BRONZE[0], con.BRONZE[1], con.BRONZE[2]))
             for i in range(rank, self.num_leds):
-                self.strip.setPixelColor(i, Color(255, 255, 255))
+                self.strip.setPixelColor(i, Color(0, 0, 0))
         self.strip.show()
 
     def light_down(self):
