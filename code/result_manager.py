@@ -56,6 +56,9 @@ class Result():
 
         with open(f'code/{game_type}_result.json', 'w', encoding='utf-8') as fp:
                 json.dump(self.data, fp, ensure_ascii=False, indent=4)
+
+    def get_rank(self) -> int:
+        return self.index + 1
     
     def _initialize_score (self,game_type: str) -> int:
         if game_type == "memory":
