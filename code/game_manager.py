@@ -163,6 +163,7 @@ class GameManager():
                 self.current_state = "WAITING"
                 self.game_type = "memory"
                 self.led_button.light_down()
+                self.cooldown = 50
             if not self.gpio.input(con.PORT_RED):
                 self.current_state = "WAITING"
                 self.game_type = "reflex"
@@ -222,6 +223,7 @@ class GameManager():
         self.rounds = []
         self.current_round_number = 0
         self.input_round_number = 0
+        self.cooldown = 50
 
     def _update_music(self):
         if self.current_state == "START":
