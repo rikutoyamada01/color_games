@@ -153,6 +153,19 @@ class GameManager():
             if event.type == pg.KEYDOWN:
                 if self.current_state == "START":
                     self.player_name.handle_input(event)
+
+        if self.current_state in ("START", "GAME_OVER"):
+            if not self.gpio.input(con.PORT_BLUE):
+                self.current_state = "WAITING"
+                self.game_type = "memory"
+                self.led_button.light_down()
+            if not self.gpio.input(con.PORT_RED):
+                self.current_state = "WAITING"
+                self.game_type = "reflex"
+                self.led_button.light_down()
+                self.start_time = pg.time.get_ticks()
+                self.cooldown = 50
+            
             
         if self.cooldown < 0 and self.current_state == "INPUT":
             for color_button in self.color_buttons:
