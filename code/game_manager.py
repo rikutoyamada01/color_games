@@ -77,6 +77,9 @@ class GameManager():
             if self.cooldown <= 0:
                 self.led_button.light_down()
 
+        if self.current_state in ("START", "GAME_OVER"):
+            self.cooldown -= 1
+
         #light up control
         if self.current_state == "WAITING":
             self.cooldown -= 1
@@ -133,6 +136,7 @@ class GameManager():
                         self.memory_start_button.click()
                         self.game_type = "memory"
                         self.led_button.light_down()
+                        self.cooldown = 50
                     if self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = "WAITING"
                         self.memory_start_button.click()
@@ -154,7 +158,7 @@ class GameManager():
                 if self.current_state == "START":
                     self.player_name.handle_input(event)
 
-        if self.current_state in ("START", "GAME_OVER"):
+        if self.cooldown < 0 and self.current_state in ("START", "GAME_OVER"):
             if not self.gpio.input(con.PORT_BLUE):
                 self.current_state = "WAITING"
                 self.game_type = "memory"
