@@ -73,7 +73,7 @@ class GameManager():
         for color_button in self.color_buttons:
             color_button.update(self.cooldown)
         
-        if self.game_type == "memory":
+        if self.game_type == "memory" and self.current_state in self.active_game_states:
             if self.cooldown <= 0:
                 self.led_button.light_down()
 
