@@ -35,9 +35,10 @@ class PixelStrip:
     def show(self):
         """Mock method to display the current LED colors."""
         """print("Mock PixelStrip: show() called. Current LED states:")"""
+        list_color = []
         for i, color in enumerate(self.leds):
-            """print(f"  LED {i}: {color}")"""
-            pass
+            list_color.append(color)
+        print(f"LED: {list_color}")
 
     def setBrightness(self, brightness):
         """
@@ -52,7 +53,7 @@ class PixelStrip:
         return self.brightness
 
 
-def Color(red, green, blue):
+def Color(red: int, green: int, blue: int):
     """
     Mock function to convert RGB values to a single integer.
     :param red: Red component (0-255).

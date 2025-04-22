@@ -13,7 +13,7 @@ class LEDButton(pg.sprite.Sprite):
         super().__init__()
         self.screen = screen
         self.pos = (x,y)
-        self.color = con.WHITE
+        self.color = con.BLACK
         self.radius = 125
         
         self.num_leds =16
@@ -26,14 +26,34 @@ class LEDButton(pg.sprite.Sprite):
     def draw(self):
         self.button_center = pg.draw.circle(self.screen,self.color,self.pos,self.radius,0)
         self.button_trim = pg.draw.circle(self.screen,con.BLACK,self.pos,self.radius + 10,12)
-        
+
+    def _set_color_on_all(self, color):
         for i in range(self.num_leds):
-            self.strip.setPixelColor(i, Color(self.color[0], self.color[1], self.color[2])) 
-        self.strip.show()
+            self.strip.setPixelColor(i, Color(color[0], color[1], color[2]))
 
     def light_up(self, color):
         self.color = color
+        self._set_color_on_all(color)
+        self.strip.show()
 
+    def light_up_for_rank(self, rank):
+        if rank in (0, 1):
+            self.color = con.GOLD
+            self._set_color_on_all(con.GOLD)
+        elif rank == 2:
+            self.color = con.SILVER
+            self._set_color_on_all(con.SILVER)
+        else:
+            self.color = con.BRONZE
+            for i in range(rank):
+                self.strip.setPixelColor(i, Color(con.BRONZE[0], con.BRONZE[1], con.BRONZE[2]))
+            for i in range(rank, self.num_leds):
+                self.strip.setPixelColor(i, Color(0, 0, 0))
+        self.strip.show()
 
     def light_down(self):
-        self.color = con.WHITE
+        if self.color == con.BLACK:
+            return
+        self.color = con.BLACK
+        self._set_color_on_all(self.color)
+        self.strip.show()

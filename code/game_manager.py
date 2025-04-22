@@ -73,9 +73,12 @@ class GameManager():
         for color_button in self.color_buttons:
             color_button.update(self.cooldown)
         
-        if self.game_type == "memory":
+        if self.game_type == "memory" and self.current_state in self.active_game_states:
             if self.cooldown <= 0:
                 self.led_button.light_down()
+
+        if self.current_state in ("START", "GAME_OVER"):
+            self.cooldown -= 1
 
         #light up control
         if self.current_state == "WAITING":
@@ -116,7 +119,7 @@ class GameManager():
                         self.cooldown = 80
                     
         if self.game_type == "reflex" and len(self.rounds) > 10:
-            self._reset("GAME_OVER", self.game_type)
+            self._reset(self.game_type)
 
         self._update_music()
         
@@ -132,10 +135,13 @@ class GameManager():
                         self.current_state = "WAITING"
                         self.memory_start_button.click()
                         self.game_type = "memory"
+                        self.led_button.light_down()
+                        self.cooldown = 50
                     if self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = "WAITING"
                         self.memory_start_button.click()
                         self.game_type = "reflex"
+                        self.led_button.light_down()
                         self.start_time = pg.time.get_ticks()
                         self.cooldown = 50
                     if self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
@@ -151,6 +157,20 @@ class GameManager():
             if event.type == pg.KEYDOWN:
                 if self.current_state == "START":
                     self.player_name.handle_input(event)
+
+        if self.cooldown < 0 and self.current_state in ("START", "GAME_OVER"):
+            if not self.gpio.input(con.PORT_BLUE):
+                self.current_state = "WAITING"
+                self.game_type = "memory"
+                self.led_button.light_down()
+                self.cooldown = 50
+            if not self.gpio.input(con.PORT_RED):
+                self.current_state = "WAITING"
+                self.game_type = "reflex"
+                self.led_button.light_down()
+                self.start_time = pg.time.get_ticks()
+                self.cooldown = 50
+            
             
         if self.cooldown < 0 and self.current_state == "INPUT":
             for color_button in self.color_buttons:
@@ -185,7 +205,7 @@ class GameManager():
         self.clock.tick(60)
 
 
-    def _reset(self, state: str, game_type: str) -> None:
+    def _reset(self, game_type: str) -> None:
         self.result = Result(self.screen,con.SCREEN_WIDTH/2,50, game_type)
         self.result.load(game_type)
         if game_type == "memory":
@@ -195,12 +215,15 @@ class GameManager():
             self.time = self.end_time - self.start_time
             self.result.save(self.time/1000, self.player_name.get(), game_type)
 
-        self.current_state = state
-        self.rounds = []
-        self.led_button.light_down
+        self.rank = self.result.get_rank(self.game_type)
+        self.led_button.light_down()
+        self.led_button.light_up_for_rank(self.rank)
         self.led_button.draw()
+        self.current_state = "GAME_OVER"
+        self.rounds = []
         self.current_round_number = 0
         self.input_round_number = 0
+        self.cooldown = 100
 
     def _update_music(self):
         if self.current_state == "START":
@@ -230,7 +253,7 @@ class GameManager():
                 self.led_button.light_up(color_button.color)
         else:
             if self.game_type == "memory":
-                self._reset("GAME_OVER", self.game_type)
+                self._reset(self.game_type)
 
 
 
