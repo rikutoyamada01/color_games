@@ -37,18 +37,11 @@ class LEDButton(pg.sprite.Sprite):
         self.strip.show()
 
     def light_up_for_rank(self, rank):
-        if rank in (0, 1):
-            self.color = con.GOLD
-            self._set_color_on_all(con.GOLD)
-        elif rank == 2:
-            self.color = con.SILVER
-            self._set_color_on_all(con.SILVER)
-        else:
-            self.color = con.BRONZE
-            for i in range(rank):
-                self.strip.setPixelColor(i, Color(con.BRONZE[0], con.BRONZE[1], con.BRONZE[2]))
-            for i in range(rank, self.num_leds):
-                self.strip.setPixelColor(i, Color(0, 0, 0))
+        self.color = con.BRONZE
+        for i in range(rank):
+            self.strip.setPixelColor(i, Color(con.BRONZE[0], con.BRONZE[1], con.BRONZE[2]))
+        for i in range(rank, self.num_leds):
+            self.strip.setPixelColor(i, Color(0, 0, 0))
         self.strip.show()
 
     def light_down(self):
