@@ -15,7 +15,7 @@ class GameManager():
     def __init__(self) -> None:
         # init game
         pg.init()
-        self.screen = pg.display.set_mode((con.SCREEN_WIDTH,con.SCREEN_HEIGHT))
+        self.screen = pg.display.set_mode((1280,750), pg.RESIZABLE)
         pg.display.set_caption("Color Game")
         self.clock = pg.time.Clock()
         self.round_font = pg.font.Font(None, 50)
@@ -40,16 +40,16 @@ class GameManager():
 
 
         #init buttons
-        self.memory_start_button = MenuButton(self.screen,con.SCREEN_WIDTH/2,400,"memory",con.LIGHT_GREEN)
-        self.reflex_start_button = MenuButton(self.screen,con.SCREEN_WIDTH/2,500,"reflex",con.LIGHT_GREEN)
-        self.exit_button = MenuButton(self.screen,con.SCREEN_WIDTH/2, 600, "exit",con.LIGHT_GREEN)
+        self.reflex_start_button = MenuButton(self.screen,pg.display.get_window_size()[0]/2,400,"reflex",con.RED, con.LIGHT_RED)
+        self.memory_start_button = MenuButton(self.screen,pg.display.get_window_size()[0]/2,500,"memory",con.BLUE, con.LIGHT_BLUE)
+        self.exit_button = MenuButton(self.screen, pg.display.get_window_size()[0]/2, 600, "exit",con.LIGHT_GREEN)
 
-        self.player_name = PlayerName(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT/2-100)
+        self.player_name = PlayerName(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]/2-100)
 
-        self.red_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
-        self.blue_button = ColorButton(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
-        self.yellow_button = ColorButton(self.screen, 150, con.SCREEN_HEIGHT/2, con.YELLOW, con.LIGHT_YELLOW, con.PORT_YELLOW)
-        self.green_button = ColorButton(self.screen, con.SCREEN_WIDTH-150, con.SCREEN_HEIGHT/2, con.GREEN, con.LIGHT_GREEN ,con.PORT_GREEN)
+        self.red_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
+        self.blue_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
+        self.yellow_button = ColorButton(self.screen, 150, pg.display.get_window_size()[1]/2, con.YELLOW, con.LIGHT_YELLOW, con.PORT_YELLOW)
+        self.green_button = ColorButton(self.screen, pg.display.get_window_size()[0]-150, pg.display.get_window_size()[1]/2, con.GREEN, con.LIGHT_GREEN ,con.PORT_GREEN)
         self.color_buttons = [self.red_button, self.blue_button, self.yellow_button, self.green_button]
         
         self.gpio = GPIO
@@ -59,7 +59,7 @@ class GameManager():
         self.gpio.setup(con.PORT_YELLOW, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
         self.gpio.setup(con.PORT_BLUE, self.gpio.IN, pull_up_down=self.gpio.PUD_UP)
         
-        self.led_button = LEDButton(self.screen, con.SCREEN_WIDTH/2, con.SCREEN_HEIGHT/2)
+        self.led_button = LEDButton(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]/2)
 
         #init round
         self.rounds = [random.choice(self.color_buttons)]
@@ -85,13 +85,11 @@ class GameManager():
             self.cooldown -= 1
             
             cooldown_threshold = -20 if self.game_type == "memory" else -5
-    
-            if self.cooldown < cooldown_threshold:
+
+            if self.cooldown <= cooldown_threshold:
                 if self.current_round_number >= len(self.rounds):
                     self.current_state = "INPUT"
                     self.current_round_number = 0
-                    if self.game_type == "memory":
-                        self.led_button.light_down()
                 else:
                     target_round = self.current_round_number if self.game_type == "memory" else len(self.rounds) - 1
                     self.led_button.light_up(self.rounds[target_round].color)
@@ -170,6 +168,9 @@ class GameManager():
                 self.led_button.light_down()
                 self.start_time = pg.time.get_ticks()
                 self.cooldown = 50
+            if not self.gpio.input(con.PORT_GREEN):
+                self.exit_button.click()
+                self._quit()
             
             
         if self.cooldown < 0 and self.current_state == "INPUT":
