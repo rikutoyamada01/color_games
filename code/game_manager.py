@@ -6,7 +6,7 @@ from led_buttons import LEDButton
 from menu_buttons import MenuButton
 from controll_buttons import ControllButton
 from player_name_manager import PlayerName
-from result_manager import Result
+from result_manager import Result, RankingTable
 import random
 try:
     import RPi.GPIO as GPIO
@@ -56,11 +56,15 @@ class GameManager():
         self.stop_button = ControllButton(self.screen, "Stoppen", (100,40), (-10,10))
         self.new_profile_button = ControllButton(self.screen, "Nieuw Profiel", (150, 40), (-120, 10))
 
+
+        self.result = Result(self.screen)
+        self.ranking_table = RankingTable(self.screen, self.screen_size, (400,550))
+
         self.objects: dict[str,list[Resizable]] = {
             con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button],
             con.WAITING: [self.stop_button],
             con.INPUT: [self.stop_button],
-            con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button],
+            con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button, self.result, self.ranking_table],
         }
         for group in self.objects.values():
             for object in group:
@@ -220,9 +224,6 @@ class GameManager():
         for object in self.objects[self.current_state]:
             object.draw()
 
-        if self.current_state == con.GAME_OVER:
-            self.result.draw(self.game_type)
-
         if self.current_state in self.active_game_states:
             round_surf = self.round_font.render(f"round {len(self.rounds)}", 0, con.BLACK)
             self.screen.blit(round_surf, (10,10))
@@ -237,7 +238,6 @@ class GameManager():
 
 
     def _reset(self, game_type: str) -> None:
-        self.result = Result(self.screen,con.SCREEN_WIDTH/2,50, game_type)
         self.result.load(game_type)
         if game_type == con.MEMORY:
             self.result.save(len(self.rounds), self.player_name.get(), game_type)
@@ -245,8 +245,8 @@ class GameManager():
             self.end_time = pg.time.get_ticks()
             self.time = self.end_time - self.start_time
             self.result.save(self.time/1000, self.player_name.get(), game_type)
-
-        self.rank = self.result.get_rank(self.game_type)
+        self.ranking_table.load(self.result.get_data())
+        self.rank = self.result.get_rank()
         self.led_button.light_down()
         self.led_button.light_up_for_rank(self.rank)
         self.led_button.draw()
