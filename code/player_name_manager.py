@@ -1,8 +1,9 @@
 import pygame as pg
 import constants as con
 import re
+from resizable import Resizable
 
-class PlayerName():
+class PlayerName(Resizable):
     def __init__(self,screen: pg.surface.Surface, offset=(0,-200), color=con.WHITE) -> None:
         self.player_name = "Naam"
         self.font = pg.font.Font(None, 100)

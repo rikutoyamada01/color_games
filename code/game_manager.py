@@ -1,8 +1,10 @@
 import pygame as pg
 import constants as con
+from resizable import Resizable
 from color_buttons import ColorButton
 from led_buttons import LEDButton
 from menu_buttons import MenuButton
+from controll_buttons import ControllButton
 from player_name_manager import PlayerName
 from result_manager import Result
 import random
@@ -42,21 +44,27 @@ class GameManager():
 
         #init player name
         self.player_name = PlayerName(screen=self.screen, offset=(0, -200), color=con.WHITE)
-        self.player_name.update_position(self.screen_size)
 
         #init buttons
         self.reflex_start_button = MenuButton(self.screen, "Reactiespel startten", (400, 100), (0, -50), con.MENU_RED, con.LIGHT_RED)
-        self.reflex_start_button.update_position(self.screen_size)
         self.memory_start_button = MenuButton(self.screen, "Geheugenspel startten", (400, 100), (0, 60), con.MENU_BLUE, con.LIGHT_BLUE)
-        self.memory_start_button.update_position(self.screen_size)
         self.reflex_video_button = MenuButton(self.screen, "Reactiespel video", (400, 100), (0, 170), con.MENU_GREEN, con.LIGHT_GREEN)
-        self.reflex_video_button.update_position(self.screen_size)
         self.memory_video_button = MenuButton(self.screen, "Geheugenspel video", (400, 100), (0, 280), con.MENU_YELLOW, con.LIGHT_YELLOW)
-        self.memory_video_button.update_position(self.screen_size)
         self.menu_buttons = [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button]
 
-        self.exit_button = MenuButton(self.screen, "Afsluiten", (400, 100), (500, 170), con.MENU_GREEN, con.LIGHT_GREEN)
-        self.exit_button.update_position(self.screen_size)
+        self.exit_button = ControllButton(self.screen, "Afsluiten", (100, 40), (-10, 10))
+        self.stop_button = ControllButton(self.screen, "Stoppen", (100,40), (-10,10))
+        self.new_profile_button = ControllButton(self.screen, "Nieuw Profiel", (150, 40), (-120, 10))
+
+        self.objects: dict[str,list[Resizable]] = {
+            con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button],
+            con.WAITING: [self.stop_button],
+            con.INPUT: [self.stop_button],
+            con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button],
+        }
+        for group in self.objects.values():
+            for object in group:
+                object.update_position(self.screen_size)
 
         self.red_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
         self.blue_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
@@ -142,12 +150,11 @@ class GameManager():
             if event.type == pg.VIDEORESIZE:
                 self.screen_size = event.w, event.h
                 self.screen = pg.display.set_mode(self.screen_size, pg.RESIZABLE)
-                self.player_name.update_position(self.screen_size)
-                for button in self.menu_buttons:
-                    button.update_position(self.screen_size)
+                for group in self.objects.values():
+                    for object in group:
+                        object.update_position(self.screen_size)
                 for color_button in self.color_buttons:
                     color_button.update(self.cooldown)
-                self.exit_button.update_position(self.screen_size)
             if event.type == pg.MOUSEBUTTONDOWN:
                 if self.current_state in (con.START, con.GAME_OVER):
                     if self.memory_start_button.rect.collidepoint((pg.mouse.get_pos())):
@@ -202,21 +209,11 @@ class GameManager():
     def draw(self) -> None:
         self.screen.fill(con.WHITE)
 
-        if self.current_state == con.START:
-            self.player_name.draw()
-            self.memory_start_button.draw()
-            self.reflex_start_button.draw()
-            self.reflex_video_button.draw()
-            self.memory_video_button.draw()
-            self.exit_button.draw()
+        for object in self.objects[self.current_state]:
+            object.draw()
 
         if self.current_state == con.GAME_OVER:
             self.result.draw(self.game_type)
-            self.memory_start_button.draw()
-            self.reflex_start_button.draw()
-            self.reflex_video_button.draw()
-            self.memory_video_button.draw()
-            self.exit_button.draw()
 
         if self.current_state in self.active_game_states:
             round_surf = self.round_font.render(f"round {len(self.rounds)}", 0, con.BLACK)

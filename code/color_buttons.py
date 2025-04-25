@@ -1,11 +1,11 @@
 import constants as con
 import pygame as pg
+from resizable import Resizable
 
 pg.mixer.init()
 
-class ColorButton(pg.sprite.Sprite):
+class ColorButton(Resizable):
     def __init__(self, screen, x: int, y: int, color=con.WHITE , light_color=con.WHITE, port_num=0):
-        super().__init__()
         self.screen = screen
         self.pos = (x,y)
         self.color = color
@@ -21,6 +21,9 @@ class ColorButton(pg.sprite.Sprite):
 
         if self.is_clicked:
             self.button_light = pg.draw.circle(self.screen, self.light_color, self.pos, self.radius + 24, 20)
+
+    def update_position(self, screen_size):
+        return super().update_position(screen_size)
 
 
     def click(self):

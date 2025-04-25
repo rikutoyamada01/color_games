@@ -1,10 +1,11 @@
 import constants as con
 import pygame as pg
+from resizable import Resizable
 
 pg.mixer.init()
 
-class MenuButton():
-    def __init__(self, screen: pg.surface.Surface, text: str, size: tuple[int]=(200,100) ,offset: tuple[int]=(0,0) ,color=con.WHITE, hover_color=(150, 255, 150), text_color=con.BLACK) -> None:
+class MenuButton(Resizable):
+    def __init__(self, screen: pg.surface.Surface, text: str, size: tuple[int]=(200,100) ,offset: tuple[int]=(0,0) ,color=con.WHITE, hover_color=(150, 255, 150), text_color=con.WHITE) -> None:
         self.screen = screen
         self.size = size
         self.border_radius = size[1] // 2
@@ -30,7 +31,7 @@ class MenuButton():
         pg.draw.circle(self.surface, color, (self.border_radius, self.size[1] // 2), self.border_radius - 10)
 
         # 中央にテキスト
-        text_surf = self.font.render(self.text, True, (255, 255, 255))
+        text_surf = self.font.render(self.text, True, self.text_color)
         text_rect = text_surf.get_rect(center=(self.size[0] // 2 + 50, self.size[1] // 2))
         self.surface.blit(text_surf, text_rect)
 
