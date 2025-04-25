@@ -147,7 +147,7 @@ class GameManager():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self._quit()
-            if event.type == pg.VIDEORESIZE:
+            elif event.type == pg.VIDEORESIZE:
                 self.screen_size = event.w, event.h
                 self.screen = pg.display.set_mode(self.screen_size, pg.RESIZABLE)
                 for group in self.objects.values():
@@ -155,7 +155,7 @@ class GameManager():
                         object.update_position(self.screen_size)
                 for color_button in self.color_buttons:
                     color_button.update(self.cooldown)
-            if event.type == pg.MOUSEBUTTONDOWN:
+            elif event.type == pg.MOUSEBUTTONDOWN:
                 if self.current_state in (con.START, con.GAME_OVER):
                     if self.memory_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = con.WAITING
@@ -173,6 +173,14 @@ class GameManager():
                     if self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.exit_button.click()
                         self._quit()
+                    
+                    if self.current_state == con.GAME_OVER:
+                        if self.new_profile_button.rect.collidepoint((pg.mouse.get_pos())):
+                            print("new profile button is pressed")
+
+                if self.current_state in self.active_game_states:
+                    if self.stop_button.rect.collidepoint((pg.mouse.get_pos())):
+                        print("stop button is pressed")
 
                 #input about color button
                 if self.cooldown < 0 and self.current_state == con.INPUT:
@@ -180,7 +188,7 @@ class GameManager():
                         if (color_button.button_center.collidepoint((pg.mouse.get_pos()))):
                             self._handle_color_button_input(color_button)
                     
-            if event.type == pg.KEYDOWN:
+            elif event.type == pg.KEYDOWN:
                 if self.current_state == con.START:
                     self.player_name.handle_input(event)
 
