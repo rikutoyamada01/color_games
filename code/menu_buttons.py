@@ -3,7 +3,7 @@ import pygame as pg
 
 pg.mixer.init()
 
-class MenuButton(pg.sprite.Sprite):
+class MenuButton():
     def __init__(self, screen: pg.surface.Surface, text: str, size: tuple[int]=(200,100) ,offset: tuple[int]=(0,0) ,color=con.WHITE, hover_color=(150, 255, 150), text_color=con.BLACK) -> None:
         self.screen = screen
         self.size = size
