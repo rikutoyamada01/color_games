@@ -15,7 +15,7 @@ class GameManager():
     def __init__(self) -> None:
         # init game
         pg.init()
-        self.screen = pg.display.set_mode((1280,750), pg.RESIZABLE)
+        self.screen = pg.display.set_mode((1000,700), pg.RESIZABLE)
         pg.display.set_caption("Color Game")
         self.clock = pg.time.Clock()
         self.round_font = pg.font.Font(None, 50)
@@ -23,6 +23,7 @@ class GameManager():
         self.active_game_states = ["WAITING", "INPUT"]
         self.current_state = "START"
         self.game_type = None
+        self.screen_size = pg.display.get_window_size()
 
         #music input
         self.start_music = pg.mixer.Sound("Audio/Music/menu_music.mp3")
@@ -39,12 +40,23 @@ class GameManager():
         self.game_over_channel = pg.mixer.Channel(3)
 
 
-        #init buttons
-        self.reflex_start_button = MenuButton(self.screen,pg.display.get_window_size()[0]/2,400,"reflex",con.RED, con.LIGHT_RED)
-        self.memory_start_button = MenuButton(self.screen,pg.display.get_window_size()[0]/2,500,"memory",con.BLUE, con.LIGHT_BLUE)
-        self.exit_button = MenuButton(self.screen, pg.display.get_window_size()[0]/2, 600, "exit",con.LIGHT_GREEN)
+        #init player name
+        self.player_name = PlayerName(screen=self.screen, offset=(0, -200), color=con.WHITE)
+        self.player_name.update_position(self.screen_size)
 
-        self.player_name = PlayerName(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]/2-100)
+        #init buttons
+        self.reflex_start_button = MenuButton(self.screen, "Reactiespel startten", (400, 100), (0, -50), con.MENU_RED, con.LIGHT_RED)
+        self.reflex_start_button.update_position(self.screen_size)
+        self.memory_start_button = MenuButton(self.screen, "Geheugenspel startten", (400, 100), (0, 60), con.MENU_BLUE, con.LIGHT_BLUE)
+        self.memory_start_button.update_position(self.screen_size)
+        self.reflex_video_button = MenuButton(self.screen, "Reactiespel video", (400, 100), (0, 170), con.MENU_GREEN, con.LIGHT_GREEN)
+        self.reflex_video_button.update_position(self.screen_size)
+        self.memory_video_button = MenuButton(self.screen, "Geheugenspel video", (400, 100), (0, 280), con.MENU_YELLOW, con.LIGHT_YELLOW)
+        self.memory_video_button.update_position(self.screen_size)
+        self.menu_buttons = [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button]
+
+        self.exit_button = MenuButton(self.screen, "Afsluiten", (400, 100), (500, 170), con.MENU_GREEN, con.LIGHT_GREEN)
+        self.exit_button.update_position(self.screen_size)
 
         self.red_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
         self.blue_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
@@ -127,6 +139,15 @@ class GameManager():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self._quit()
+            if event.type == pg.VIDEORESIZE:
+                self.screen_size = event.w, event.h
+                self.screen = pg.display.set_mode(self.screen_size, pg.RESIZABLE)
+                self.player_name.update_position(self.screen_size)
+                for button in self.menu_buttons:
+                    button.update_position(self.screen_size)
+                for color_button in self.color_buttons:
+                    color_button.update(self.cooldown)
+                self.exit_button.update_position(self.screen_size)
             if event.type == pg.MOUSEBUTTONDOWN:
                 if self.current_state in ("START", "GAME_OVER"):
                     if self.memory_start_button.rect.collidepoint((pg.mouse.get_pos())):
@@ -182,16 +203,20 @@ class GameManager():
         self.screen.fill(con.WHITE)
 
         if self.current_state == "START":
+            self.player_name.draw()
             self.memory_start_button.draw()
             self.reflex_start_button.draw()
+            self.reflex_video_button.draw()
+            self.memory_video_button.draw()
             self.exit_button.draw()
-            self.player_name.draw()
 
         if self.current_state == "GAME_OVER":
+            self.result.draw(self.game_type)
             self.memory_start_button.draw()
             self.reflex_start_button.draw()
+            self.reflex_video_button.draw()
+            self.memory_video_button.draw()
             self.exit_button.draw()
-            self.result.draw(self.game_type)
 
         if self.current_state in self.active_game_states:
             round_surf = self.round_font.render(f"round {len(self.rounds)}", 0, con.BLACK)
