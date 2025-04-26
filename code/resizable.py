@@ -7,5 +7,5 @@ class Resizable(ABC):
         pass
 
     @abstractmethod
-    def draw(self, screen: pg.Surface) -> None:
+    def draw(self) -> None:
         pass
