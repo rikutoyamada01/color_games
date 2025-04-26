@@ -18,7 +18,7 @@ class GameManager():
     def __init__(self) -> None:
         # init game
         pg.init()
-        self.screen = pg.display.set_mode((1000,700), pg.RESIZABLE)
+        self.screen = pg.display.set_mode((0,0), pg.FULLSCREEN)
         pg.display.set_caption("Color Game")
         self.clock = pg.time.Clock()
         self.round_font = pg.font.Font(None, 50)
