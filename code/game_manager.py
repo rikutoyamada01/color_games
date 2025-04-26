@@ -180,10 +180,23 @@ class GameManager():
                     
                     if self.current_state == con.GAME_OVER:
                         if self.new_profile_button.rect.collidepoint((pg.mouse.get_pos())):
+                            self.current_state = con.START
+                            self.player_name.reset_name()
                             print("new profile button is pressed")
+
 
                 if self.current_state in self.active_game_states:
                     if self.stop_button.rect.collidepoint((pg.mouse.get_pos())):
+                        self.current_state = con.GAME_OVER
+                        self.result.load(self.game_type)
+                        self.ranking_table.load(self.result.get_data())
+                        self.led_button.light_down()
+                        self.led_button.draw()
+                        self.current_state = con.GAME_OVER
+                        self.rounds = []
+                        self.current_round_number = 0
+                        self.input_round_number = 0
+                        self.cooldown = 100
                         print("stop button is pressed")
 
                 #input about color button

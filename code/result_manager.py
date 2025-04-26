@@ -20,6 +20,9 @@ class Result(Resizable):
         self.your_name = "No Name"
         self.surface = pg.Surface((400,200) , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
+        self.rank = 0
+        self.text = "Geen score"
+
 
 
     def draw(self) -> None:
@@ -41,8 +44,7 @@ class Result(Resizable):
         rank_rect = rank_surf.get_rect(center=(self.border_radius, self.box_size[1] // 2))
         self.surface.blit(rank_surf, rank_rect)
 
-        text = f"{self.memory_score} punten" if self.game_type == con.MEMORY else f"{self.reflex_score:.3f} s"
-        text_surf = self.font.render(text, True, self.text_color)
+        text_surf = self.font.render(self.text, True, self.text_color)
         text_rect = text_surf.get_rect(center=(self.box_size[0] // 2 + 50, self.box_size[1] // 2))
         self.surface.blit(text_surf, text_rect)
 
@@ -77,9 +79,9 @@ class Result(Resizable):
     def save(self, new_score: int, name: str, game_type: str = "memory") -> None:
         self._check_file_exists(game_type)
         if game_type == con.MEMORY:
-            self.memory_score = new_score
+            self.text = f"{self.memory_score} punten"
         else:
-            self.reflex_score = new_score
+            self.text = f"{self.reflex_score:.3f} s"
 
         existing_index = next((i for i, item in enumerate(self.data) if item["name"] == name), None)
         if game_type == con.MEMORY:
@@ -112,6 +114,10 @@ class Result(Resizable):
 
     def get_rank(self) -> int:
         return self.index + 1
+    
+    def set_stop_option(self) -> None:
+        self.rank = 0
+        self.text = "Geen score"
     
     def _initialize_score (self,game_type: str) -> int:
         if game_type == "memory":

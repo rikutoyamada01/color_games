@@ -55,6 +55,9 @@ class PlayerName(Resizable):
             self.player_name = "Naam"
         
         return self.player_name
+    
+    def reset_name(self):
+        self.player_name = "Naam"
 
 def test():
     # Pygameの初期化
