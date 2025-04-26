@@ -75,10 +75,10 @@ class GameManager():
             for object in group:
                 object.update_position(self.screen_size)
 
-        self.red_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, 150, con.RED, con.LIGHT_RED, con.PORT_RED)
-        self.blue_button = ColorButton(self.screen, pg.display.get_window_size()[0]/2, pg.display.get_window_size()[1]-150, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
-        self.yellow_button = ColorButton(self.screen, 150, pg.display.get_window_size()[1]/2, con.YELLOW, con.LIGHT_YELLOW, con.PORT_YELLOW)
-        self.green_button = ColorButton(self.screen, pg.display.get_window_size()[0]-150, pg.display.get_window_size()[1]/2, con.GREEN, con.LIGHT_GREEN ,con.PORT_GREEN)
+        self.red_button = ColorButton(self.screen, self.screen_size[0]/2, self.screen_size[1]/2 - 250, con.RED, con.LIGHT_RED, con.PORT_RED)
+        self.blue_button = ColorButton(self.screen, self.screen_size[0]/2, self.screen_size[1]/2 + 250, con.BLUE, con.LIGHT_BLUE, con.PORT_BLUE)
+        self.yellow_button = ColorButton(self.screen, self.screen_size[0]/2 - 250, self.screen_size[1]/2, con.YELLOW, con.LIGHT_YELLOW, con.PORT_YELLOW)
+        self.green_button = ColorButton(self.screen, self.screen_size[0]/2 + 250, self.screen_size[1]/2, con.GREEN, con.LIGHT_GREEN ,con.PORT_GREEN)
         self.color_buttons = [self.red_button, self.blue_button, self.yellow_button, self.green_button]
         
         self.gpio = GPIO
