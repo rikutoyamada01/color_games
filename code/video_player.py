@@ -44,7 +44,7 @@ class VideoPlayer(Resizable):
 
     def update_position(self, screen_size):
         w, h = screen_size
-        self.rect.center = (w * 3 // 4, h * 2 // 3)
+        self.rect.center = (w * 3 // 4, h * 3 // 5)
 
     def draw(self):
         self.screen.blit(self.surf, self.rect)
@@ -60,6 +60,11 @@ class VideoPlayer(Resizable):
     def stop(self):
         self.current_state = "stop"
         self.surf = pg.Surface(self.size, pg.SRCALPHA)
+        self.reflex_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        self.memory_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+
+    def get_state(self) -> str:
+        return self.current_state
 
     
 

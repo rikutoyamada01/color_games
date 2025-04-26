@@ -55,7 +55,7 @@ class Result(Resizable):
         self.rect.center = (w // 4 + self.offset[0], h // 2 + self.offset[1])
 
 
-    def load(self, game_type: str = "memory") -> None:
+    def load(self, game_type: str) -> None:
         self._check_file_exists(game_type)
         self.game_type = game_type
 
@@ -76,12 +76,12 @@ class Result(Resizable):
 
 
 
-    def save(self, new_score: int, name: str, game_type: str = "memory") -> None:
+    def save(self, new_score: int, name: str, game_type: str) -> None:
         self._check_file_exists(game_type)
         if game_type == con.MEMORY:
-            self.text = f"{self.memory_score} punten"
+            self.text = f"{new_score} punten"
         else:
-            self.text = f"{self.reflex_score:.3f} s"
+            self.text = f"{new_score:.3f} s"
 
         existing_index = next((i for i, item in enumerate(self.data) if item["name"] == name), None)
         if game_type == con.MEMORY:

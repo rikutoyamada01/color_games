@@ -6,6 +6,7 @@ from led_buttons import LEDButton
 from menu_buttons import MenuButton
 from controll_buttons import ControllButton
 from player_name_manager import PlayerName
+from video_player import VideoPlayer
 from result_manager import Result, RankingTable
 import random
 try:
@@ -57,14 +58,18 @@ class GameManager():
         self.new_profile_button = ControllButton(self.screen, "Nieuw Profiel", (150, 40), (-120, 10))
 
 
+        memory_path = "video/memory_game_tutorial.mp4"
+        reflex_path = "video/reflex_game_tutorial.mp4"
+        self.video_player = VideoPlayer(self.screen, memory_path, reflex_path, size=(600, 600))
+
         self.result = Result(self.screen)
         self.ranking_table = RankingTable(self.screen, self.screen_size, (400,550))
 
         self.objects: dict[str,list[Resizable]] = {
-            con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button],
+            con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button, self.video_player],
             con.WAITING: [self.stop_button],
             con.INPUT: [self.stop_button],
-            con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button, self.result, self.ranking_table],
+            con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button, self.result, self.ranking_table, self.video_player],
         }
         for group in self.objects.values():
             for object in group:
@@ -143,6 +148,9 @@ class GameManager():
         if self.game_type == con.REFLEX and len(self.rounds) > 10:
             self._reset(self.game_type)
 
+        if self.current_state in (con.START, con.GAME_OVER):
+            self.video_player.update()
+
         self._update_music()
         
 
@@ -165,16 +173,28 @@ class GameManager():
                         self.current_state = con.WAITING
                         self.memory_start_button.click()
                         self.game_type = con.MEMORY
+                        self.video_player.stop()
                         self.led_button.light_down()
                         self.cooldown = 50
-                    if self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
+                    elif self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = con.WAITING
                         self.memory_start_button.click()
                         self.game_type = con.REFLEX
+                        self.video_player.stop()
                         self.led_button.light_down()
                         self.start_time = pg.time.get_ticks()
                         self.cooldown = 50
-                    if self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
+                    elif self.memory_video_button.rect.collidepoint((pg.mouse.get_pos())):
+                        if self.video_player.get_state() == con.MEMORY:
+                            self.video_player.stop()
+                        else:
+                            self.video_player.play_memory_tutorial()
+                    elif self.reflex_video_button.rect.collidepoint((pg.mouse.get_pos())):
+                        if self.video_player.get_state() == con.REFLEX:
+                            self.video_player.stop()
+                        else:
+                            self.video_player.play_reflex_tutorial()
+                    elif self.exit_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.exit_button.click()
                         self._quit()
                     
@@ -189,6 +209,7 @@ class GameManager():
                     if self.stop_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = con.GAME_OVER
                         self.result.load(self.game_type)
+                        self.result.set_stop_option()
                         self.ranking_table.load(self.result.get_data())
                         self.led_button.light_down()
                         self.led_button.draw()
@@ -222,8 +243,15 @@ class GameManager():
                 self.start_time = pg.time.get_ticks()
                 self.cooldown = 50
             if not self.gpio.input(con.PORT_GREEN):
-                self.exit_button.click()
-                self._quit()
+                if self.video_player.get_state() == con.REFLEX:
+                    self.video_player.stop()
+                else:
+                    self.video_player.play_reflex_tutorial()
+            if not self.gpio.input(con.PORT_YELLOW):
+                if self.video_player.get_state() == con.MEMORY:
+                    self.video_player.stop()
+                else:
+                    self.video_player.play_memory_tutorial()
             
             
         if self.cooldown < 0 and self.current_state == con.INPUT:
