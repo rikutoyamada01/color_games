@@ -281,7 +281,7 @@ class GameManager():
     def _reset(self, game_type: str) -> None:
         self.result.load(game_type)
         if game_type == con.MEMORY:
-            self.result.save(len(self.rounds), self.player_name.get(), game_type)
+            self.result.save(len(self.rounds)-1, self.player_name.get(), game_type)
         if game_type == con.REFLEX:
             self.end_time = pg.time.get_ticks()
             self.time = self.end_time - self.start_time

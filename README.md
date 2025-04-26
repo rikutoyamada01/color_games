@@ -16,7 +16,7 @@ cd color_games
 ### Install dependencies
 (Optional: using virtual environment)
 ```sh
-python3 -m venv venv
+python -m venv venv
 ```
 
 #### Activate virtual environment
@@ -31,7 +31,7 @@ source venv/bin/activate
 
 #### Install required packages
 ```sh
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## 2. Usage
