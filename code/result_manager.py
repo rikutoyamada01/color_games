@@ -222,7 +222,6 @@ class RankingTable(Resizable):
         self.screen_size = screen_size
 
     def draw(self) -> None:
-        pg.draw.rect(self.surf, con.BLACK, (0,0,*self.size), 2)
         # draw each row
         for row in self.rows:
             row.draw()

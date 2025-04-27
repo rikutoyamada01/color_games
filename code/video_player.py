@@ -16,15 +16,10 @@ class VideoPlayer(Resizable):
         self.surf = pg.Surface(size, pg.SRCALPHA)
         self.rect = self.surf.get_rect()
         self.current_state = "stop"
-        self.frame_counter = 0
 
     def update(self):
         if self.current_state == "stop":
             self.surf = pg.Surface(self.size, pg.SRCALPHA)
-            return
-        
-        self.frame_counter += 1
-        if self.frame_counter % 2 != 0:
             return
         
         if self.current_state == "memory":
