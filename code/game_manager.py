@@ -276,6 +276,7 @@ class GameManager():
                 if not self.gpio.input(color_button.port_num):
                     print("color button pressed")
                     self._handle_color_button_input(color_button)
+                    break
     
     def draw(self) -> None:
         self.screen.fill(con.WHITE)
