@@ -16,7 +16,7 @@ class MenuButton(Resizable):
         self.hover_color = hover_color
         self.text = text
         self.text_color = text_color
-        self.font = pg.font.Font(None, 36)
+        self.font = pg.font.Font(None, 52)
         self.sound = pg.mixer.Sound("Audio/SE/UI/menu_button_click_sound.mp3")
 
     def draw(self):

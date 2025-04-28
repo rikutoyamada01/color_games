@@ -65,7 +65,7 @@ class GameManager():
         self.video_player = VideoPlayer(self.screen, memory_path, reflex_path, size=(800, 800))
 
         self.result = Result(self.screen)
-        self.ranking_table = RankingTable(self.screen, self.screen_size, (600,800))
+        self.ranking_table = RankingTable(self.screen, self.screen_size, (600,700))
 
         self.objects: dict[str,list[Resizable]] = {
             con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button, self.video_player],

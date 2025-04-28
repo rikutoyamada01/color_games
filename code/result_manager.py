@@ -207,7 +207,7 @@ class RankingTable(Resizable):
         for i in range(10):
             data.append({"name": "---", "score": "---"})
         self.data = data[:10]  # take top 10
-        self.font = pg.font.Font(None, 36)
+        self.font = pg.font.Font(None, 52)
         # pre-create rows
         self.row_h = size[1] // 11  # 1 for header + 10 rows
         self.table_w = size[0]
