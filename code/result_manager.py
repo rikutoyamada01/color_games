@@ -9,6 +9,7 @@ class Result(Resizable):
     def __init__(self, screen: pg.surface.Surface) -> None:
         self.screen = screen
         self.box_size = (600, 150)
+        self.offset = (0, -100)
         self.border_radius = self.box_size[1]//2
         self.color = con.WHITE
         self.text_color = con.BLACK
@@ -17,7 +18,7 @@ class Result(Resizable):
         self.memory_score = 0
         self.reflex_score = 9999999
         self.your_name = "No Name"
-        self.surface = pg.Surface((600,150) , pg.SRCALPHA)
+        self.surface = pg.Surface(self.box_size , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
         self.rank = 0
         self.text = "Geen score"
@@ -51,7 +52,7 @@ class Result(Resizable):
 
     def update_position(self, screen_size) -> None:
         w, h = screen_size
-        self.rect.center = (w // 4, h // 4)
+        self.rect.center = (w // 4 + self.offset[0], h // 4 + self.offset[1])
 
 
     def load(self, game_type: str) -> None:
