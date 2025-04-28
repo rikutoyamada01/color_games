@@ -90,6 +90,10 @@ class Result(Resizable):
             self.index = bisect.bisect_right([entry["score"] for entry in self.data], new_score)
         self.rank = self.get_rank()
 
+        if name == "Naam":
+            with open(f'code/{game_type}_result.json', 'w', encoding='utf-8') as fp:
+                json.dump(self.data, fp, ensure_ascii=False, indent=4)
+
         should_replace = True
         if existing_index is not None:
             existing_score = self.data[existing_index]["score"]
