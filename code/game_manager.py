@@ -312,7 +312,7 @@ class GameManager():
         self.current_state = con.GAME_OVER
         self.rounds = []
         self.current_round_number = 0
-        self.round_counter.update(self.current_round_number)
+        self.round_counter.update(1)
         self.input_round_number = 0
         self.cooldown = 40
 

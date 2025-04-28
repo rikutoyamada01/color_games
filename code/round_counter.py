@@ -7,7 +7,7 @@ class RoundCounter(Resizable):
         super().__init__()
         self.screen = screen
         self.size = size
-        self.current_round = 0
+        self.current_round = 1
         self.surf = pg.Surface(size, pg.SRCALPHA)
         self.rect = self.surf.get_rect()
         self.font = pg.font.Font(None, size[1])
