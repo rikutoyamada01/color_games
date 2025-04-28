@@ -196,13 +196,13 @@ class GameManager():
                         self.game_type_surf.set_game_type(self.game_type)
                         self.cooldown = 50
                     elif self.memory_video_button.rect.collidepoint((pg.mouse.get_pos())):
-                        self.cooldown = 50
+                        self.cooldown = 20
                         if self.video_player.get_state() == con.MEMORY:
                             self.video_player.stop()
                         else:
                             self.video_player.play_memory_tutorial()
                     elif self.reflex_video_button.rect.collidepoint((pg.mouse.get_pos())):
-                        self.cooldown = 50
+                        self.cooldown = 20
                         if self.video_player.get_state() == con.REFLEX:
                             self.video_player.stop()
                         else:
@@ -230,7 +230,7 @@ class GameManager():
                         self.rounds = []
                         self.current_round_number = 0
                         self.input_round_number = 0
-                        self.cooldown = 100
+                        self.cooldown = 20
                         print("stop button is pressed")
 
                 #input about color button
@@ -314,7 +314,7 @@ class GameManager():
         self.current_round_number = 0
         self.round_counter.update(1)
         self.input_round_number = 0
-        self.cooldown = 40
+        self.cooldown = 20
 
     def _update_music(self):
         if self.current_state == con.START:
