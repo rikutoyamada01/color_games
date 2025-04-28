@@ -93,6 +93,7 @@ class Result(Resizable):
         if name == "Naam":
             with open(f'code/{game_type}_result.json', 'w', encoding='utf-8') as fp:
                 json.dump(self.data, fp, ensure_ascii=False, indent=4)
+            return
 
         should_replace = True
         if existing_index is not None:
