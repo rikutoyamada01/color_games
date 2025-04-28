@@ -18,7 +18,7 @@ class Result(Resizable):
         self.memory_score = 0
         self.reflex_score = 9999999
         self.your_name = "No Name"
-        self.surface = pg.Surface((600,200) , pg.SRCALPHA)
+        self.surface = pg.Surface((600,150) , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
         self.rank = 0
         self.text = "Geen score"
