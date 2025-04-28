@@ -42,7 +42,10 @@ class GameTypeSurf(Resizable):
 
     def set_game_type(self, gametype: str):
         self.gametype = gametype
-        self.text = self.gametype.upper()
+        if self.gametype == con.MEMORY:
+            self.text = "GEHEUGEN"
+        elif self.gametype == con.REFLEX:
+            self.text = "REACTIE"
 
     def draw(self):
         self.surf.fill((0,0,0,0))

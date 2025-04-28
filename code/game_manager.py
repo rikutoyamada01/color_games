@@ -133,7 +133,8 @@ class GameManager():
                         self.cooldown = 50
                     
                     self.current_round_number += 1
-                    self.round_counter.update(self.current_round_number)
+                    if self.game_type == con.MEMORY:
+                        self.round_counter.update(self.current_round_number)
 
         #check rounds and change to waiting phase
         if self.current_state == con.INPUT:
@@ -144,6 +145,8 @@ class GameManager():
                     self.current_state = con.WAITING
                     self.led_button.light_down()
                     self.rounds.append(random.choice(self.color_buttons)) #random
+                    if self.game_type == con.REFLEX:
+                        self.round_counter.update(len(self.rounds))
                     
                     if self.game_type == con.MEMORY:
                         self.input_round_number = 0
@@ -309,6 +312,7 @@ class GameManager():
         self.current_state = con.GAME_OVER
         self.rounds = []
         self.current_round_number = 0
+        self.round_counter.update(self.current_round_number)
         self.input_round_number = 0
         self.cooldown = 100
 
