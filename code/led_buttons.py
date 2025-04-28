@@ -1,6 +1,7 @@
 import constants as con
 import pygame as pg
 try:
+    print("imported GPIO and PixelStripe")
     import RPi.GPIO as GPIO
     from rpi_ws281x import PixelStrip, Color
 except ImportError:

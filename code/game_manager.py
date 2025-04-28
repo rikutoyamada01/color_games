@@ -10,6 +10,7 @@ from video_player import VideoPlayer
 from result_manager import Result, RankingTable
 import random
 try:
+    print("imported GPIO")
     import RPi.GPIO as GPIO
 except ImportError:
     print("error")
