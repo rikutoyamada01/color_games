@@ -249,22 +249,22 @@ class GameManager():
                 self.game_type = con.MEMORY
                 self.led_button.light_down()
                 self.game_type_surf.set_game_type(self.game_type)
-                self.cooldown = 50
+                self.cooldown = 20
             if not self.gpio.input(con.PORT_RED):
                 self.current_state = con.WAITING
                 self.game_type = con.REFLEX
                 self.led_button.light_down()
                 self.start_time = pg.time.get_ticks()
                 self.game_type_surf.set_game_type(self.game_type)
-                self.cooldown = 50
+                self.cooldown = 20
             if not self.gpio.input(con.PORT_GREEN):
-                self.cooldown = 50
+                self.cooldown = 20
                 if self.video_player.get_state() == con.REFLEX:
                     self.video_player.stop()
                 else:
                     self.video_player.play_reflex_tutorial()
             if not self.gpio.input(con.PORT_YELLOW):
-                self.cooldown = 50
+                self.cooldown = 20
                 if self.video_player.get_state() == con.MEMORY:
                     self.video_player.stop()
                 else:
@@ -314,7 +314,7 @@ class GameManager():
         self.current_round_number = 0
         self.round_counter.update(self.current_round_number)
         self.input_round_number = 0
-        self.cooldown = 100
+        self.cooldown = 40
 
     def _update_music(self):
         if self.current_state == con.START:
