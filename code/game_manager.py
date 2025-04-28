@@ -8,6 +8,7 @@ from controll_buttons import ControllButton
 from player_name_manager import PlayerName
 from video_player import VideoPlayer
 from result_manager import Result, RankingTable
+from round_counter import RoundCounter, GameTypeSurf
 import random
 try:
     print("imported GPIO")
@@ -64,13 +65,16 @@ class GameManager():
         reflex_path = "video/reflex_game_tutorial.mp4"
         self.video_player = VideoPlayer(self.screen, memory_path, reflex_path, size=(800, 800))
 
+        self.round_counter = RoundCounter(self.screen, (400,400))
+        self.game_type_surf = GameTypeSurf(self.screen, (600, 150))
+
         self.result = Result(self.screen)
         self.ranking_table = RankingTable(self.screen, self.screen_size, (600,700))
 
         self.objects: dict[str,list[Resizable]] = {
             con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button, self.video_player],
-            con.WAITING: [self.stop_button],
-            con.INPUT: [self.stop_button],
+            con.WAITING: [self.stop_button, self.round_counter, self.game_type_surf],
+            con.INPUT: [self.stop_button, self.round_counter, self.game_type_surf],
             con.GAME_OVER: [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.new_profile_button, self.exit_button, self.result, self.ranking_table, self.video_player],
         }
         for group in self.objects.values():
@@ -129,6 +133,7 @@ class GameManager():
                         self.cooldown = 50
                     
                     self.current_round_number += 1
+                    self.round_counter.update(self.current_round_number)
 
         #check rounds and change to waiting phase
         if self.current_state == con.INPUT:
@@ -176,6 +181,7 @@ class GameManager():
                         self.game_type = con.MEMORY
                         self.video_player.stop()
                         self.led_button.light_down()
+                        self.game_type_surf.set_game_type(self.game_type)
                         self.cooldown = 50
                     elif self.reflex_start_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.current_state = con.WAITING
@@ -184,6 +190,7 @@ class GameManager():
                         self.video_player.stop()
                         self.led_button.light_down()
                         self.start_time = pg.time.get_ticks()
+                        self.game_type_surf.set_game_type(self.game_type)
                         self.cooldown = 50
                     elif self.memory_video_button.rect.collidepoint((pg.mouse.get_pos())):
                         self.cooldown = 50
@@ -224,10 +231,10 @@ class GameManager():
                         print("stop button is pressed")
 
                 #input about color button
-                if self.cooldown < 0 and self.current_state == con.INPUT:
+                """if self.cooldown < 0 and self.current_state == con.INPUT:
                     for color_button in self.color_buttons:
                         if (color_button.button_center.collidepoint((pg.mouse.get_pos()))):
-                            self._handle_color_button_input(color_button)
+                            self._handle_color_button_input(color_button)"""
                     
             elif event.type == pg.KEYDOWN:
                 if self.current_state == con.START:
@@ -238,12 +245,14 @@ class GameManager():
                 self.current_state = con.WAITING
                 self.game_type = con.MEMORY
                 self.led_button.light_down()
+                self.game_type_surf.set_game_type(self.game_type)
                 self.cooldown = 50
             if not self.gpio.input(con.PORT_RED):
                 self.current_state = con.WAITING
                 self.game_type = con.REFLEX
                 self.led_button.light_down()
                 self.start_time = pg.time.get_ticks()
+                self.game_type_surf.set_game_type(self.game_type)
                 self.cooldown = 50
             if not self.gpio.input(con.PORT_GREEN):
                 self.cooldown = 50
@@ -271,14 +280,14 @@ class GameManager():
         for object in self.objects[self.current_state]:
             object.draw()
 
-        if self.current_state in self.active_game_states:
+        """if self.current_state in self.active_game_states:
             round_surf = self.round_font.render(f"round {len(self.rounds)}", 0, con.BLACK)
             self.screen.blit(round_surf, (10,10))
 
             for color_button in self.color_buttons:
                 color_button.draw()
                 
-            self.led_button.draw()
+            self.led_button.draw()"""
 
         pg.display.update()
         self.clock.tick(30)
