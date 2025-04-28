@@ -12,6 +12,7 @@ import random
 try:
     import RPi.GPIO as GPIO
 except ImportError:
+    print("error")
     from mock_gpio import MockGPIO as GPIO
 
 class GameManager():
