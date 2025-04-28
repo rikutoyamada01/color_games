@@ -232,7 +232,7 @@ class GameManager():
                 if self.current_state == con.START:
                     self.player_name.handle_input(event)
 
-        if self.cooldown < 0 and self.current_state in (con.START, con.GAME_OVER):
+        if self.current_state in (con.START, con.GAME_OVER):
             if not self.gpio.input(con.PORT_BLUE):
                 self.current_state = con.WAITING
                 self.game_type = con.MEMORY
