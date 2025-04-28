@@ -8,17 +8,17 @@ from resizable import Resizable
 class Result(Resizable):
     def __init__(self, screen: pg.surface.Surface) -> None:
         self.screen = screen
-        self.box_size = (400, 100)
+        self.box_size = (600, 150)
         self.offset =(0, -200)
-        self.border_radius = 50
+        self.border_radius = self.box_size[1]//2
         self.color = con.WHITE
         self.text_color = con.BLACK
-        self.font = pg.font.Font(None, 72)
-        self.sub_font = pg.font.Font(None, 36)
+        self.font = pg.font.Font(None, 100)
+        self.sub_font = pg.font.Font(None, 52)
         self.memory_score = 0
         self.reflex_score = 9999999
         self.your_name = "No Name"
-        self.surface = pg.Surface((400,200) , pg.SRCALPHA)
+        self.surface = pg.Surface((600,200) , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
         self.rank = 0
         self.text = "Geen score"

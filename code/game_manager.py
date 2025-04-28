@@ -46,13 +46,13 @@ class GameManager():
 
 
         #init player name
-        self.player_name = PlayerName(screen=self.screen, offset=(0, -200), color=con.WHITE)
+        self.player_name = PlayerName(screen=self.screen, offset=(0, 0), color=con.WHITE)
 
         #init buttons
-        self.reflex_start_button = MenuButton(self.screen, "Reactiespel starten", (400, 100), (0, -50), con.MENU_RED, con.LIGHT_RED)
-        self.memory_start_button = MenuButton(self.screen, "Geheugenspel starten", (400, 100), (0, 60), con.MENU_BLUE, con.LIGHT_BLUE)
-        self.reflex_video_button = MenuButton(self.screen, "Reactiespel video", (400, 100), (0, 170), con.MENU_GREEN, con.LIGHT_GREEN)
-        self.memory_video_button = MenuButton(self.screen, "Geheugenspel video", (400, 100), (0, 280), con.MENU_YELLOW, con.LIGHT_YELLOW)
+        self.reflex_start_button = MenuButton(self.screen, "Reactiespel starten", (600, 150), (0, -100), con.MENU_RED, con.LIGHT_RED)
+        self.memory_start_button = MenuButton(self.screen, "Geheugenspel starten", (600, 150), (0, 70), con.MENU_BLUE, con.LIGHT_BLUE)
+        self.reflex_video_button = MenuButton(self.screen, "Reactiespel video", (600, 150), (0, 240), con.MENU_GREEN, con.LIGHT_GREEN)
+        self.memory_video_button = MenuButton(self.screen, "Geheugenspel video", (600, 150), (0, 410), con.MENU_YELLOW, con.LIGHT_YELLOW)
         self.menu_buttons = [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button]
 
         self.exit_button = ControllButton(self.screen, "Afsluiten", (100, 40), (-10, 10))
@@ -62,10 +62,10 @@ class GameManager():
 
         memory_path = "video/memory_game_tutorial.mp4"
         reflex_path = "video/reflex_game_tutorial.mp4"
-        self.video_player = VideoPlayer(self.screen, memory_path, reflex_path, size=(600, 600))
+        self.video_player = VideoPlayer(self.screen, memory_path, reflex_path, size=(800, 800))
 
         self.result = Result(self.screen)
-        self.ranking_table = RankingTable(self.screen, self.screen_size, (400,550))
+        self.ranking_table = RankingTable(self.screen, self.screen_size, (600,800))
 
         self.objects: dict[str,list[Resizable]] = {
             con.START: [self.player_name, self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button, self.exit_button, self.video_player],
