@@ -249,6 +249,7 @@ class GameManager():
                 self.game_type = con.MEMORY
                 self.led_button.light_down()
                 self.game_type_surf.set_game_type(self.game_type)
+                self.video_player.stop()
                 self.cooldown = 20
             if not self.gpio.input(con.PORT_RED):
                 self.current_state = con.WAITING
@@ -256,6 +257,7 @@ class GameManager():
                 self.led_button.light_down()
                 self.start_time = pg.time.get_ticks()
                 self.game_type_surf.set_game_type(self.game_type)
+                self.video_player.stop()
                 self.cooldown = 20
             if not self.gpio.input(con.PORT_GREEN):
                 self.cooldown = 20
