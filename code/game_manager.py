@@ -257,6 +257,7 @@ class GameManager():
         if self.cooldown < 0 and self.current_state == con.INPUT:
             for color_button in self.color_buttons:
                 if not self.gpio.input(color_button.port_num):
+                    print("color button pressed")
                     self._handle_color_button_input(color_button)
     
     def draw(self) -> None:
