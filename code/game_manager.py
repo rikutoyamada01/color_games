@@ -230,7 +230,7 @@ class GameManager():
                         self.rounds = []
                         self.current_round_number = 0
                         self.input_round_number = 0
-                        self.cooldown = 20
+                        self.cooldown = 50
                         print("stop button is pressed")
 
                 #input about color button
@@ -315,7 +315,7 @@ class GameManager():
         self.current_round_number = 0
         self.round_counter.update(1)
         self.input_round_number = 0
-        self.cooldown = 20
+        self.cooldown = 50
 
     def _update_music(self):
         if self.current_state == con.START:
