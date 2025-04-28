@@ -275,7 +275,7 @@ class GameManager():
             self.led_button.draw()
 
         pg.display.update()
-        self.clock.tick(60)
+        self.clock.tick(30)
 
 
     def _reset(self, game_type: str) -> None:
