@@ -39,7 +39,7 @@ class VideoPlayer(Resizable):
 
     def update_position(self, screen_size):
         w, h = screen_size
-        self.rect.center = (w * 3 // 4, h * 2)
+        self.rect.center = (w * 3 // 4, h // 2)
 
     def draw(self):
         self.screen.blit(self.surf, self.rect)
