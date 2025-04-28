@@ -47,8 +47,8 @@ class GameManager():
         self.player_name = PlayerName(screen=self.screen, offset=(0, -200), color=con.WHITE)
 
         #init buttons
-        self.reflex_start_button = MenuButton(self.screen, "Reactiespel startten", (400, 100), (0, -50), con.MENU_RED, con.LIGHT_RED)
-        self.memory_start_button = MenuButton(self.screen, "Geheugenspel startten", (400, 100), (0, 60), con.MENU_BLUE, con.LIGHT_BLUE)
+        self.reflex_start_button = MenuButton(self.screen, "Reactiespel starten", (400, 100), (0, -50), con.MENU_RED, con.LIGHT_RED)
+        self.memory_start_button = MenuButton(self.screen, "Geheugenspel starten", (400, 100), (0, 60), con.MENU_BLUE, con.LIGHT_BLUE)
         self.reflex_video_button = MenuButton(self.screen, "Reactiespel video", (400, 100), (0, 170), con.MENU_GREEN, con.LIGHT_GREEN)
         self.memory_video_button = MenuButton(self.screen, "Geheugenspel video", (400, 100), (0, 280), con.MENU_YELLOW, con.LIGHT_YELLOW)
         self.menu_buttons = [self.reflex_start_button, self.memory_start_button, self.reflex_video_button, self.memory_video_button]
