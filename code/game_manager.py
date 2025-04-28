@@ -186,11 +186,13 @@ class GameManager():
                         self.start_time = pg.time.get_ticks()
                         self.cooldown = 50
                     elif self.memory_video_button.rect.collidepoint((pg.mouse.get_pos())):
+                        self.cooldown = 50
                         if self.video_player.get_state() == con.MEMORY:
                             self.video_player.stop()
                         else:
                             self.video_player.play_memory_tutorial()
                     elif self.reflex_video_button.rect.collidepoint((pg.mouse.get_pos())):
+                        self.cooldown = 50
                         if self.video_player.get_state() == con.REFLEX:
                             self.video_player.stop()
                         else:
@@ -244,11 +246,13 @@ class GameManager():
                 self.start_time = pg.time.get_ticks()
                 self.cooldown = 50
             if not self.gpio.input(con.PORT_GREEN):
+                self.cooldown = 50
                 if self.video_player.get_state() == con.REFLEX:
                     self.video_player.stop()
                 else:
                     self.video_player.play_reflex_tutorial()
             if not self.gpio.input(con.PORT_YELLOW):
+                self.cooldown = 50
                 if self.video_player.get_state() == con.MEMORY:
                     self.video_player.stop()
                 else:
