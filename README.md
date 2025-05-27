@@ -1,57 +1,86 @@
-# color_games
-For STEM lesson to make the games that are good for elder people
+# 🎮 color_games
 
-## 1. Installation
+Games for STEM lessons, designed to be fun and accessible for older adults.
 
-### Clone the repo
+---
+
+## 📦 Installation
+
+### 1. Clone the repository
 ```sh
 git clone https://github.com/rikutoyamada01/color_games
-```
-
-### Navigate to the project folder
-```sh
 cd color_games
 ```
 
-### Install dependencies
-(Optional: using virtual environment)
+### 2. (Optional) Set up a virtual environment  
+> ⚠️ **Do not use a virtual environment if you're using LED lights (rpi_ws281x).**
+
+**Create a virtual environment:**
 ```sh
-python3 -m venv venv
+python -m venv venv
 ```
 
-#### Activate virtual environment
-**For Windows:**
+**Activate the virtual environment:**
+
+- **Windows:**
+  ```sh
+  venv\Scripts\activate
+  ```
+- **macOS/Linux:**
+  ```sh
+  source venv/bin/activate
+  ```
+
+### 3. Install dependencies
 ```sh
-venv\Scripts\Activate
-```
-**For macOS/Linux:**
-```sh
-source venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-#### Install required packages
-```sh
-pip install -r requirements.txt
-```
+---
 
-## 2. Usage
-#### Run the game:
-**For Rasberry Pi**
-```sh
-sudo python code/main.py
-```
-("sudo" is for using rpi_ws281x)
+## ▶️ Usage
 
-**For Windows**
-```command prompt
-python code/main.py
-```
+### Run the game:
 
-#### Deactivate virtual environment
-(If using virtual environment, deactivate when done:)
+- **On Raspberry Pi** (required for LED support):
+  ```sh
+  sudo python code/main.py
+  ```
+  > `sudo` is required to access `rpi_ws281x` (LED control).
+
+- **On Windows/macOS/Linux** (without LED support):
+  ```sh
+  python code/main.py
+  ```
+
+### (Optional) Deactivate virtual environment
 ```sh
 deactivate
 ```
 
-## 3. License
-This project is not licensed.
+---
+
+## 🛠 Troubleshooting
+
+If you encounter issues, check the [Issues page](https://github.com/rikutoyamada01/color_games/issues) to report bugs or get help.
+
+### Problem: Can't install a module on Raspberry Pi under restricted access
+
+If your Raspberry Pi is heavily managed or locked down, this command may fail:
+```sh
+sudo apt-get install python3-opencv
+```
+
+✅ **Solution:** Use `pip` instead:
+```sh
+sudo pip3 install python3-opencv
+```
+
+---
+
+## 📄 License
+
+This project is currently **not licensed**. You are free to use and modify it, but it has no formal licensing terms.
+
+---
+Rikuto Yamada 2025-04-29

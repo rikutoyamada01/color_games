@@ -8,17 +8,17 @@ from resizable import Resizable
 class Result(Resizable):
     def __init__(self, screen: pg.surface.Surface) -> None:
         self.screen = screen
-        self.box_size = (400, 100)
-        self.offset =(0, -200)
-        self.border_radius = 50
+        self.box_size = (600, 150)
+        self.offset = (0, -100)
+        self.border_radius = self.box_size[1]//2
         self.color = con.WHITE
         self.text_color = con.BLACK
-        self.font = pg.font.Font(None, 72)
-        self.sub_font = pg.font.Font(None, 36)
+        self.font = pg.font.Font(None, 100)
+        self.sub_font = pg.font.Font(None, 52)
         self.memory_score = 0
         self.reflex_score = 9999999
         self.your_name = "No Name"
-        self.surface = pg.Surface((400,200) , pg.SRCALPHA)
+        self.surface = pg.Surface(self.box_size , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
         self.rank = 0
         self.text = "Geen score"
@@ -52,7 +52,7 @@ class Result(Resizable):
 
     def update_position(self, screen_size) -> None:
         w, h = screen_size
-        self.rect.center = (w // 4 + self.offset[0], h // 2 + self.offset[1])
+        self.rect.center = (w // 4 + self.offset[0], h // 4 + self.offset[1])
 
 
     def load(self, game_type: str) -> None:
@@ -89,6 +89,11 @@ class Result(Resizable):
         else:
             self.index = bisect.bisect_right([entry["score"] for entry in self.data], new_score)
         self.rank = self.get_rank()
+
+        if name == "Naam":
+            with open(f'code/{game_type}_result.json', 'w', encoding='utf-8') as fp:
+                json.dump(self.data, fp, ensure_ascii=False, indent=4)
+            return
 
         should_replace = True
         if existing_index is not None:
@@ -207,7 +212,7 @@ class RankingTable(Resizable):
         for i in range(10):
             data.append({"name": "---", "score": "---"})
         self.data = data[:10]  # take top 10
-        self.font = pg.font.Font(None, 36)
+        self.font = pg.font.Font(None, 52)
         # pre-create rows
         self.row_h = size[1] // 11  # 1 for header + 10 rows
         self.table_w = size[0]
@@ -222,7 +227,6 @@ class RankingTable(Resizable):
         self.screen_size = screen_size
 
     def draw(self) -> None:
-        pg.draw.rect(self.surf, con.BLACK, (0,0,*self.size), 2)
         # draw each row
         for row in self.rows:
             row.draw()

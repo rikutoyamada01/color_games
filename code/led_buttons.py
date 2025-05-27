@@ -1,6 +1,7 @@
 import constants as con
 import pygame as pg
 try:
+    print("imported GPIO and PixelStripe")
     import RPi.GPIO as GPIO
     from rpi_ws281x import PixelStrip, Color
 except ImportError:
@@ -24,7 +25,8 @@ class LEDButton(pg.sprite.Sprite):
         self.sound = pg.mixer.Sound("Audio/SE/UI/menu_button_click_sound.mp3")
 
     def draw(self):
-        self.button_center = pg.draw.circle(self.screen,self.color,self.pos,self.radius,0)
+        self.digital_color = (self.color[0] * 1.5, self.color[1] *1.5, self.color[2] * 1.5)
+        self.button_center = pg.draw.circle(self.screen,self.digital_color,self.pos,self.radius,0)
         self.button_trim = pg.draw.circle(self.screen,con.BLACK,self.pos,self.radius + 10,12)
 
     def _set_color_on_all(self, color):

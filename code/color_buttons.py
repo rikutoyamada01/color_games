@@ -16,7 +16,8 @@ class ColorButton(Resizable):
         self.sound = pg.mixer.Sound("Audio/SE/UI/menu_button_click_sound.mp3")
 
     def draw(self):
-        self.button_center = pg.draw.circle(self.screen,self.color,self.pos,self.radius,0)
+        self.digital_color = (self.color[0] * 1.5, self.color[1] * 1.5, self.color[2] * 1.5)
+        self.button_center = pg.draw.circle(self.screen,self.digital_color,self.pos,self.radius,0)
         self.button_trim = pg.draw.circle(self.screen,con.BLACK,self.pos,self.radius + 10,12)
 
         if self.is_clicked:

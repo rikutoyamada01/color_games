@@ -4,11 +4,11 @@ import re
 from resizable import Resizable
 
 class PlayerName(Resizable):
-    def __init__(self,screen: pg.surface.Surface, offset=(0,-200), color=con.WHITE) -> None:
+    def __init__(self,screen: pg.surface.Surface, offset=(0,0), color=con.WHITE) -> None:
         self.player_name = "Naam"
-        self.font = pg.font.Font(None, 100)
+        self.font = pg.font.Font(None, 150)
         self.screen = screen
-        self.size = (400, 110)
+        self.size = (800, 160)
         self.offset = offset
         self.surface = pg.Surface(self.size , pg.SRCALPHA)
         self.rect = self.surface.get_rect()
@@ -17,7 +17,7 @@ class PlayerName(Resizable):
 
     def update_position(self, screen_size) -> None:
         w, h = screen_size
-        self.rect.center = (w // 4 + self.offset[0], h // 2 + self.offset[1])
+        self.rect.center = (w // 4 + self.offset[0], h // 4 + self.offset[1])
         
     def draw(self) -> None:
         self.surface.fill((0, 0, 0, 0))
@@ -64,10 +64,10 @@ def test():
     pg.init()
 
     # ウィンドウのサイズとフォントを設定
-    screen = pg.display.set_mode((600, 400))
+    screen = pg.display.set_mode((1000, 700))
     pg.display.set_caption("player_name_manager_test")
     player_name_manager = PlayerName(screen, offset=(0, 0), color=con.WHITE)
-    player_name_manager.update_position((600, 400))
+    player_name_manager.update_position((1000, 700))
     clock = pg.time.Clock()
     running = True
     while running:
